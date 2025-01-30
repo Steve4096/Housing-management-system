@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="362.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.SplashScreenController">
+   <children>
+      <ImageView fitHeight="253.0" fitWidth="465.0" layoutX="33.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/WhatsApp%20Image%202025-01-29%20at%2014.10.06.jpeg" />
+         </image>
+      </ImageView>
+      <Label layoutX="44.0" layoutY="292.0" text="Welcome to Greenview Centa housing management system" />
+      <ProgressBar layoutX="102.0" layoutY="322.0" prefWidth="200.0" progress="0.0" />
+   </children>
+</AnchorPane>
