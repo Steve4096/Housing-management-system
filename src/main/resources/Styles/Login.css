@@ -1,0 +1,58 @@
+.Sign-in-lbl{
+-fx-text-fill: white;
+    -fx-font-size: 2em;
+
+}
+
+.Top-anchorpane{
+    -fx-background-color: #004040;
+    -fx-pref-height: 110;
+    -fx-max-height: 110;
+    -fx-alignment: center;
+}
+
+.Bottom-anchorpane{
+    -fx-background-radius: 10 10 0 0;
+    -fx-border-radius: 10px 10px;
+    -fx-border-top-left-radius:10px;
+    -fx-background-color:white ;
+    -fx-padding: 10;
+}
+
+.Error-lbl{
+    -fx-text-fill: red;
+}
+
+.Buttons{
+-fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
+}
+.Buttons:hover{
+    -fx-background-color:#004040 ;
+}
+
+.TextField {
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-font-size: 1em;
+}
+
+.Labels{
+    -fx-font-size: 1em;
+
+}
+
+.Welcome-back{
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-font-size: 2em;
+}
+.Forgot-password{
+-fx-font-weight: bold;
+}

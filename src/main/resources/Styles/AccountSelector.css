@@ -1,0 +1,13 @@
+.Label{
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+.Vboxes{
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.Vboxes:hover{
+    -fx-background-color:#004040 ;
+}
