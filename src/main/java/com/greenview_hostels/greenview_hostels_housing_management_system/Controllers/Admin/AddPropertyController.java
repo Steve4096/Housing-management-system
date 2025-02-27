@@ -35,11 +35,13 @@ public class AddPropertyController implements Initializable {
         Add_btn.setOnAction(actionEvent -> Addproperty());
     }
 
+//Converts amount entered in the rent textfield to BigDecimal format
     private BigDecimal ConvertrentamounttoBigDecimal(){
         String rent=Rent_amount.getText().trim();
         return new BigDecimal(rent);
     }
 
+//Checks if all fields are filled
     private boolean Allfieldsfilled(){
         unitNumber=Unit_number.getText().trim();
         unitType=Unit_type.getText().trim();
@@ -51,6 +53,7 @@ public class AddPropertyController implements Initializable {
         return true;
     }
 
+    //Checks if the rent entered is in digit format
    private void Checkrentamountformat(){
         Rent_amount.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -66,6 +69,8 @@ public class AddPropertyController implements Initializable {
         });
    }
 
+   /*If all fields are filled and rent is converted to decimal,it adds the record to the database, shows a success pop up
+    message and resets all entry fields*/
    private void Addproperty() {
        if (Allfieldsfilled() && isRentAmountValid) {
            rentAmount = ConvertrentamounttoBigDecimal();
@@ -75,12 +80,14 @@ public class AddPropertyController implements Initializable {
        }
    }
 
+   //Resets all fields
    private void resetAllFields(){
         Unit_number.setText("");
         Unit_type.setText("");
         Rent_amount.setText("");
    }
 
+   //Displays the success message alert
    private void showSuccessMessage(){
        Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
        alert.setTitle("SUCCESS");
