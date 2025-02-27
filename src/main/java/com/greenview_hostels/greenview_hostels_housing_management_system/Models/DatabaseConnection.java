@@ -1,5 +1,6 @@
 package com.greenview_hostels.greenview_hostels_housing_management_system.Models;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -49,5 +50,19 @@ public ResultSet getAdminData(String username,String password){
         e.printStackTrace();
     }
 return resultSet;
+}
+
+public void Addproperty(String unitNumber, String unitType, BigDecimal Rent_amount){
+    PreparedStatement preparedStatement;
+    try {
+        String addProperty="INSERT INTO properties(Unit_number,Unit_type,Rent_amount)values (?,?,?)";
+        preparedStatement=this.conn.prepareStatement(addProperty);
+        preparedStatement.setString(1,unitNumber);
+        preparedStatement.setString(2,unitType);
+        preparedStatement.setBigDecimal(3,Rent_amount);
+        preparedStatement.executeUpdate();
+    }catch (Exception e){
+        e.printStackTrace();
+    }
 }
 }
