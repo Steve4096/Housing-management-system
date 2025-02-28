@@ -4,6 +4,7 @@ import com.greenview_hostels.greenview_hostels_housing_management_system.Models.
 import com.greenview_hostels.greenview_hostels_housing_management_system.Views.AdminMenuOptions;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,16 +19,24 @@ public class AdminMenuController implements Initializable {
     public Button Notices_btn;
     public Button Houses_btn;
     public Button LogOut_btn;
+    public Button Add_property_btn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Dashboard_btn.setOnAction(actionEvent -> Dashboard());
         Add_Tenant_btn.setOnAction(actionEvent -> AddTenant());
         Tenants_btn.setOnAction(actionEvent -> Tenants());
         Payments_btn.setOnAction(actionEvent -> Payments());
         Houses_btn.setOnAction(actionEvent -> Houses());
+        Add_property_btn.setOnAction(actionEvent -> Addproperty());
+        LogOut_btn.setOnAction(actionEvent -> onLogout());
     }
 
-private void Payments(){
+    private void Dashboard(){
+        Model.getInstance().getViewsfactory().getAdminSelectedMenuItem().set(AdminMenuOptions.DASHBOARD);
+    }
+
+    private void Payments(){
     Model.getInstance().getViewsfactory().getAdminSelectedMenuItem().set(AdminMenuOptions.PAYMENTS);
 }
 
@@ -42,4 +51,16 @@ private void Tenants(){
 private void Houses(){
         Model.getInstance().getViewsfactory().getAdminSelectedMenuItem().set(AdminMenuOptions.HOUSES);
 }
+
+private void Addproperty(){
+        Model.getInstance().getViewsfactory().getAdminSelectedMenuItem().set(AdminMenuOptions.ADD_PROPERTY);
 }
+
+private void onLogout(){
+    Stage stage=(Stage) LogOut_btn.getScene().getWindow();
+    Model.getInstance().getViewsfactory().CloseWindow(stage);
+    Model.getInstance().getViewsfactory().showLoginAccountSelectorWindow();
+}
+}
+
+

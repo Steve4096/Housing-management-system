@@ -6,5 +6,5 @@ public enum AdminMenuOptions {
     TENANTS,
     PAYMENTS,
     HOUSES,
-    LOGOUT
+    ADD_PROPERTY
 }
