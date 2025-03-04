@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -24,7 +25,8 @@ public class Viewsfactory  {
     private AnchorPane housesview;
     private AnchorPane paymentsview;
     private AnchorPane tenantsview;
-    private AnchorPane registrationwindow;
+    private ScrollPane registrationwindow;
+    private AnchorPane addpropertywindow;
 
     //Viewsfactory Constructor
     public Viewsfactory(){
@@ -63,7 +65,7 @@ public class Viewsfactory  {
     public AnchorPane getDashboard(){
         if(admindashboard==null){
             try {
-                admindashboard=new FXMLLoader(getClass().getResource("/Fxml/Admin/Dashboard")).load();
+                admindashboard=new FXMLLoader(getClass().getResource("/Fxml/Admin/Dashboard.fxml")).load();
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -71,7 +73,7 @@ public class Viewsfactory  {
         return admindashboard;
     }
 
-    public AnchorPane getRegistrationwindow(){
+    public ScrollPane getRegistrationwindow(){
         if(registrationwindow==null){
             try {
                 registrationwindow=new FXMLLoader(getClass().getResource("/Fxml/Admin/Registration.fxml")).load();
@@ -115,7 +117,17 @@ public class Viewsfactory  {
         return housesview;
     }
 
-
+    public AnchorPane getAddpropertywindow(){
+        if(addpropertywindow==null){
+            try {
+                addpropertywindow=new FXMLLoader(getClass().getResource("/Fxml/Admin/AddProperty.fxml")).load();
+                System.out.println("Window opened");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return addpropertywindow;
+    }
 
 
     //Both Tenant and Admin

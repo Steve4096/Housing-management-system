@@ -24,11 +24,32 @@ public class RegistrationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadAvailableProperties();
+        Save_btn.setOnAction(actionEvent -> registerNewClient());
     }
 
     private void loadAvailableProperties(){
         Model.getInstance().showAvailableProperties();
         House_number_selector.getItems().setAll(Model.getInstance().availableProperties);
 
+    }
+
+    private void registerNewClient(){
+        String IDNo=TenantID_txtfield.getText();
+        String fname=Fname_txtfield.getText();
+        String lname=Lname_txtfield.getText();
+        String phoneNo=Phonenumber_txtfield.getText();
+        String emailAddress=Email_txtfield.getText();
+        String houseNo= House_number_selector.getValue();
+        Model.getInstance().getDatabaseConnection().registerNewTenant(IDNo,fname,lname,phoneNo,emailAddress,houseNo);
+        resetAllFields();
+    }
+
+    private void resetAllFields(){
+        TenantID_txtfield.setText("");
+        Fname_txtfield.setText("");
+        Lname_txtfield.setText("");
+        Phonenumber_txtfield.setText("");
+        Email_txtfield.setText("");
+        House_number_selector.setValue("");
     }
 }

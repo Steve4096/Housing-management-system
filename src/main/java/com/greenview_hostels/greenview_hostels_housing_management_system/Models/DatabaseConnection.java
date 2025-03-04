@@ -52,10 +52,13 @@ public ResultSet getAdminData(String username,String password){
 return resultSet;
 }
 
-/*public void registerNewTenant(String Tenant_ID,String Fname,String Lname,String Phone_no,String Email_address){
+public void registerNewTenant(String Tenant_ID,String Fname,String Lname,String Phone_no,String Email_address,String Property_ID){
     PreparedStatement preparedStatement;
+    PreparedStatement occupancy;
+
+    //Insert into tenants table
     try {
-        String RegisterTenant="INSERT INTO tenants(Tenant_ID,First_name,Last_name,Phone_number,Email_address,Status,Date_moved_in,Password) values(?,?,?,?,?,Active,NOW(),Greenview2025)";
+        String RegisterTenant="INSERT INTO tenants(Tenant_ID,First_name,Last_name,Phone_number,Email_address,Status,Date_moved_in,Password) values(?,?,?,?,?,'Active',NOW(),'Greenview2025')";
         preparedStatement=this.conn.prepareStatement(RegisterTenant);
         preparedStatement.setString(1,Tenant_ID);
         preparedStatement.setString(2,Fname);
@@ -64,11 +67,29 @@ return resultSet;
         preparedStatement.setString(5,Email_address);
         preparedStatement.executeUpdate();
 
-        String addTenantToOccupancyTable="INSERT INTO occupancy("
+        //Fetch corresponding property_ID based on house number selected
+        String getPropertyID="SELECT Property_ID FROM properties WHERE Unit_number=?";
+        PreparedStatement preparedStatement1;
+        ResultSet resultSet;
+        preparedStatement1=this.conn.prepareStatement(getPropertyID);
+        preparedStatement1.setString(1,Property_ID);
+        resultSet= preparedStatement1.executeQuery();
+        int propertyID=0;
+        if(resultSet.next()){
+            propertyID=resultSet.getInt("Property_ID");
+            System.out.println("Property_ID gotten"+propertyID);
+        }
+
+        //After getting the property_ID based on the unit_number entered,store it in the occupancy table along with the other relevant details
+        String addTenantToOccupancyTable="INSERT INTO occupancy(Property_ID,Tenant_ID,Date_occupied,Date_vacated) values(?,?,NOW(),NULL)";
+        occupancy=this.conn.prepareStatement(addTenantToOccupancyTable);
+        occupancy.setInt(1,propertyID);
+        occupancy.setString(2,Tenant_ID);
+        occupancy.executeUpdate();
     }catch (Exception e){
         e.printStackTrace();
     }
-}*/
+}
 
 public void Addproperty(String unitNumber, String unitType, BigDecimal Rent_amount){
     PreparedStatement preparedStatement;
