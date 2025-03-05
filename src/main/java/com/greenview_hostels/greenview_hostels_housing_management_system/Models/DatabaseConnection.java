@@ -91,6 +91,19 @@ public void registerNewTenant(String Tenant_ID,String Fname,String Lname,String 
     }
 }
 
+public ResultSet showExistingTenantDetails(){
+    PreparedStatement preparedStatement;
+    ResultSet resultSet=null;
+    try {
+        String tenantDetails="SELECT t.Tenant_ID,t.First_name,t.Last_name,t.Phone_number,p.Property_ID,p.Unit_number,o.Date_occupied from tenants t JOIN occupancy o ON t.Tenant_ID=o.Tenant_ID JOIN properties p on o.Property_ID=p.Property_ID";
+        preparedStatement=this.conn.prepareStatement(tenantDetails);
+        resultSet= preparedStatement.executeQuery();
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+    return resultSet;
+}
+
 public void Addproperty(String unitNumber, String unitType, BigDecimal Rent_amount){
     PreparedStatement preparedStatement;
     try {
