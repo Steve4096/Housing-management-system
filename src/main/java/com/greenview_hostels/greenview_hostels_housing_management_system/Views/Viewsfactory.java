@@ -1,6 +1,7 @@
 package com.greenview_hostels.greenview_hostels_housing_management_system.Views;
 
 import com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Admin.AdminController;
+import com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
@@ -15,9 +16,16 @@ import java.util.ResourceBundle;
 
 public class Viewsfactory  {
     //Client views section
+    private ObjectProperty<TenantMenuOptions> tenantSelectedMenuItem;
     private AnchorPane splashScreen;
     private AnchorPane dashboard;
     private AnchorPane forgotPasswordScreen;
+    private AnchorPane rentPayment;
+    private AnchorPane fileNotice;
+    private AnchorPane receiptsWindow;
+    private AnchorPane serviceRequest;
+    private AnchorPane paymentsWindow;
+
 
     //Admin views section
     private ObjectProperty<AdminMenuOptions> adminSelectedMenuItem;
@@ -31,9 +39,14 @@ public class Viewsfactory  {
     //Viewsfactory Constructor
     public Viewsfactory(){
         this.adminSelectedMenuItem=new SimpleObjectProperty<>(AdminMenuOptions.DASHBOARD);
+        this.tenantSelectedMenuItem=new SimpleObjectProperty<>(TenantMenuOptions.DASHBOARD);
     }
 
 //Tenant section
+    public ObjectProperty<TenantMenuOptions> getTenantSelectedMenuItem(){
+        return tenantSelectedMenuItem;
+    }
+
     public void showTenantLoginWindow(){
         FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/Login.fxml"));
         CreateStage(loader,null);
@@ -44,6 +57,88 @@ public class Viewsfactory  {
         CreateStage(loader,null);
     }
 
+    public void showTenantDashboard() {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Tenant/Tenant.fxml"));
+                TenantController tenantController = new TenantController();
+                loader.setController(tenantController);
+                CreateStage(loader, null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+
+    public AnchorPane TenantDashboard(){
+        if(dashboard==null){
+            try {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/Dashboard.fxml"));
+                dashboard=loader.load();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return dashboard;
+    }
+
+    public AnchorPane getRentPaymentWindow(){
+        if (rentPayment==null){
+            try {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/PayRent.fxml"));
+                rentPayment=loader.load();
+                PayRentController controller=loader.getController();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return rentPayment;
+    }
+
+    public AnchorPane showFileNotice() {
+        if (fileNotice==null){
+            try {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/IssueNotice.fxml"));
+                fileNotice=loader.load();
+                IssueNoticeController issueNoticeController=loader.getController();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return fileNotice;
+    }
+
+    /*public AnchorPane getReceiptsWindow() {
+        if(receiptsWindow==null){
+            try {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/"))
+            }
+        }
+    }*/
+
+    public AnchorPane showPreviousPayments(){
+        if(paymentsWindow==null){
+            try {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/PaymentHistory.fxml"));
+                paymentsWindow=loader.load();
+                PaymentHistoryController paymentHistoryController=loader.getController();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return paymentsWindow;
+    }
+
+    public AnchorPane showServiceRequest(){
+        if(serviceRequest==null){
+            try {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/ServiceRequest.fxml"));
+                serviceRequest=loader.load();
+                ServiceRequestController serviceRequestController=loader.getController();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return serviceRequest;
+    }
 
     //Admin section
     public void showAdminLoginWindow(){

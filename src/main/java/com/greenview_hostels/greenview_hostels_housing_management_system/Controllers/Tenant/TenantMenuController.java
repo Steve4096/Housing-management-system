@@ -27,6 +27,7 @@ public class TenantMenuController implements Initializable {
         Receipts_btn.setOnAction(actionEvent -> showReceiptsWindow());
         Payments_btn.setOnAction(actionEvent -> showPaymentsWindow());
         FileComplaint_btn.setOnAction(actionEvent -> showRequestServiceWindow());
+        LogOut_btn.setOnAction(actionEvent -> logout());
     }
 
     private void showDashboard(){
