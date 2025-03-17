@@ -26,6 +26,14 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Forgot_pwd_link.setOnAction(actionEvent -> RedirectToResetPasswordScreen());
         CheckEmailAddressFormat();
+        Back_btn.setOnAction(actionEvent -> showLoginAccountSelector());
+        Signin_btn.setOnAction(actionEvent -> login());
+    }
+
+    private void showLoginAccountSelector(){
+        Stage stage=(Stage) Back_btn.getScene().getWindow();
+        Model.getInstance().getViewsfactory().CloseWindow(stage);
+        Model.getInstance().getViewsfactory().showLoginAccountSelectorWindow();
     }
 
     private void RedirectToResetPasswordScreen(){
@@ -45,6 +53,12 @@ public class LoginController implements Initializable {
                 }
             }
         });
+   }
+
+   private void login(){
+        Stage stage=(Stage) Signin_btn.getScene().getWindow();
+        Model.getInstance().getViewsfactory().CloseWindow(stage);
+        Model.getInstance().getViewsfactory().showTenantDashboard();
    }
 }
 
