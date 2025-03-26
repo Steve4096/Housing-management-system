@@ -1,17 +1,14 @@
 package com.greenview_hostels.greenview_hostels_housing_management_system.Models;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class DatabaseConnection {
 private Connection conn;
 
 public DatabaseConnection(){
     try {
-        this.conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/greenview_housing_management","root","");
+        this.conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/greenview_centa","root","");
         if(this.conn!=null){
             System.out.println("Connection to the database is successful");
         }
@@ -26,14 +23,30 @@ public DatabaseConnection(){
     PreparedStatement preparedStatement;
     ResultSet resultSet=null;
     try {
-        String clientData="SELECT * FROM clients WHERE Email_address=?";
+        String clientData="SELECT * FROM clients WHERE Email_address=? AND Password=?";
         preparedStatement=this.conn.prepareStatement(clientData);
         preparedStatement.setString(1,Email_address);
+        //preparedStatement.setString(2,Password);
         resultSet= preparedStatement.executeQuery();
     }catch (Exception e){
         e.printStackTrace();
     }
     return resultSet;
+    }
+
+    public void fileNotice(String Tenant_ID,int Property_ID,Date currentDate,Date selectedDate){
+    PreparedStatement preparedStatement;
+    try {
+        String fileNotice="INSERT INTO notices(Tenant_ID,Property_ID,Date_intend_to_leave,Date_notice_issued) values(?,?,?,NOW())";
+        preparedStatement=this.conn.prepareStatement(fileNotice);
+        preparedStatement.setString(1,Tenant_ID);
+        preparedStatement.setInt(2,Property_ID);
+        preparedStatement.setDate(3,selectedDate);
+        //preparedStatement.setDate(4,currentDate);
+        preparedStatement.executeUpdate();
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
     }
 
     //Admin section
@@ -58,7 +71,7 @@ public void registerNewTenant(String Tenant_ID,String Fname,String Lname,String 
 
     //Insert into tenants table
     try {
-        String RegisterTenant="INSERT INTO tenants(Tenant_ID,First_name,Last_name,Phone_number,Email_address,Status,Date_moved_in,Password) values(?,?,?,?,?,'Active',NOW(),'Greenview2025')";
+        String RegisterTenant="INSERT INTO tenants(Tenant_ID,First_name,Last_name,Phone_number,Email_address,Status,Password) values(?,?,?,?,?,'Active','Greenview2025')";
         preparedStatement=this.conn.prepareStatement(RegisterTenant);
         preparedStatement.setString(1,Tenant_ID);
         preparedStatement.setString(2,Fname);
