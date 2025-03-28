@@ -2,6 +2,7 @@ package com.greenview_hostels.greenview_hostels_housing_management_system.Views;
 
 import com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Admin.AdminController;
 import com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant.*;
+import com.greenview_hostels.greenview_hostels_housing_management_system.Models.Tenant;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +21,7 @@ public class Viewsfactory  {
     private AnchorPane splashScreen;
     private AnchorPane dashboard;
     private AnchorPane forgotPasswordScreen;
-    private AnchorPane rentPayment;
+    private ScrollPane rentPayment;
     private AnchorPane fileNotice;
     private AnchorPane receiptsWindow;
     private AnchorPane serviceRequest;
@@ -58,21 +59,23 @@ public class Viewsfactory  {
     }
 
     public void showTenantDashboard() {
-            try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Tenant/Tenant.fxml"));
                 TenantController tenantController = new TenantController();
                 loader.setController(tenantController);
                 CreateStage(loader, null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
     }
 
-    public AnchorPane TenantDashboard(){
+    public AnchorPane TenantDashboard(Tenant tenant){
         if(dashboard==null){
             try {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/Dashboard.fxml"));
                 dashboard=loader.load();
+                DashboardController dashboardController=loader.getController();
+                if (tenant!=null) {
+                    dashboardController.setTenant(tenant);
+                }else {
+                    System.out.println("Tenant is null");
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -80,7 +83,7 @@ public class Viewsfactory  {
         return dashboard;
     }
 
-    public AnchorPane getRentPaymentWindow(){
+    public ScrollPane getRentPaymentWindow(){
         if (rentPayment==null){
             try {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/PayRent.fxml"));
@@ -93,12 +96,17 @@ public class Viewsfactory  {
         return rentPayment;
     }
 
-    public AnchorPane showFileNotice() {
+    public AnchorPane showFileNotice(Tenant tenant) {
         if (fileNotice==null){
             try {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/IssueNotice.fxml"));
                 fileNotice=loader.load();
                 IssueNoticeController issueNoticeController=loader.getController();
+                if (tenant!=null){
+                    issueNoticeController.setTenant(tenant);
+                }else {
+                    System.out.println("Tenant is null");
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -127,17 +135,28 @@ public class Viewsfactory  {
         return paymentsWindow;
     }
 
-    public AnchorPane showServiceRequest(){
+    public AnchorPane showServiceRequest(Tenant tenant){
         if(serviceRequest==null){
             try {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/ServiceRequest.fxml"));
                 serviceRequest=loader.load();
                 ServiceRequestController serviceRequestController=loader.getController();
+                if(tenant!=null){
+                    serviceRequestController.setTenant(tenant);
+                }else {
+                    System.out.println("Tenant is null");
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
         return serviceRequest;
+    }
+
+    public void resetAllWindows(){
+        dashboard=null;
+        serviceRequest=null;
+        fileNotice=null;
     }
 
     //Admin section

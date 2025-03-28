@@ -22,7 +22,7 @@
       <Label layoutX="14.0" layoutY="81.0" styleClass="Labels" text="Username or email" />
       <TextField fx:id="Email_textarea" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="185.0" promptText="Enter your username or email" styleClass="TextField" />
       <Label layoutX="14.0" layoutY="154.0" styleClass="Labels" text="Password" />
-      <TextField fx:id="Pwd_txtarea" layoutX="14.0" layoutY="171.0" prefHeight="25.0" prefWidth="185.0" promptText="Enter your password" styleClass="TextField" />
+      <TextField fx:id="Pwd_txtarea" accessibleRole="PASSWORD_FIELD" layoutX="14.0" layoutY="171.0" prefHeight="25.0" prefWidth="185.0" promptText="Enter your password" styleClass="TextField" />
       <Hyperlink fx:id="Forgot_pwd_link" layoutX="14.0" layoutY="214.0" styleClass="Forgot-password" text="Forgot Password?" />
       <Button fx:id="Signin_btn" layoutX="18.0" layoutY="247.0" mnemonicParsing="false" styleClass="Buttons" text="Sign in" />
       <Label fx:id="Invalid_email_address_lbl" layoutX="14.0" layoutY="123.0" styleClass="Error-lbl" />

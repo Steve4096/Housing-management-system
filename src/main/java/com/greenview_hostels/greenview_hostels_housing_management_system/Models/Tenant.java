@@ -8,15 +8,17 @@ public class Tenant {
     private final StringProperty fname;
     private final StringProperty lname;
     private final StringProperty phoneNo;
+    private final StringProperty emailAddress;
 
-    public Tenant(String tenantID,String fname,String lname,String phoneNo){
+    public Tenant(String tenantID,String fname,String lname,String phoneNo,String emailAddress){
         this.tenantID=new SimpleStringProperty(tenantID);
         this.fname=new SimpleStringProperty(fname);
         this.lname=new SimpleStringProperty(lname);
         this.phoneNo=new SimpleStringProperty(phoneNo);
+        this.emailAddress=new SimpleStringProperty(emailAddress);
     }
 
-    //Getter methods
+    /*//Getter methods
     public String getTenantID(){
         return tenantID.get();
     }
@@ -31,7 +33,7 @@ public class Tenant {
 
     public String getPhoneNo(){
         return phoneNo.get();
-    }
+    }*/
 
     public StringProperty tenantIDProperty(){
         return tenantID;
@@ -47,5 +49,9 @@ public class Tenant {
 
     public StringProperty phoneNoProperty(){
         return phoneNo;
+    }
+
+    public StringProperty emailAddressProperty(){
+        return emailAddress;
     }
 }
