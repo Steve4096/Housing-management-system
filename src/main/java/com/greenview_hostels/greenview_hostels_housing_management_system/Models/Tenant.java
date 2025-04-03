@@ -1,7 +1,13 @@
 package com.greenview_hostels.greenview_hostels_housing_management_system.Models;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.time.LocalDateTime;
 
 public class Tenant {
     private final StringProperty tenantID;
@@ -10,12 +16,47 @@ public class Tenant {
     private final StringProperty phoneNo;
     private final StringProperty emailAddress;
 
-    public Tenant(String tenantID,String fname,String lname,String phoneNo,String emailAddress){
+    private final ObservableList<Property> properties;
+    private final ObjectProperty<LocalDateTime> dateMovedIn;
+
+    public Tenant(String tenantID,String fname,String lname,String phoneNo,String emailAddress,LocalDateTime dateMovedIn){
         this.tenantID=new SimpleStringProperty(tenantID);
         this.fname=new SimpleStringProperty(fname);
         this.lname=new SimpleStringProperty(lname);
         this.phoneNo=new SimpleStringProperty(phoneNo);
         this.emailAddress=new SimpleStringProperty(emailAddress);
+        this.properties= FXCollections.observableArrayList();
+        this.dateMovedIn=new SimpleObjectProperty<>(dateMovedIn);
+    }
+
+    public void addProperty(Property property){
+        this.properties.add(property);
+    }
+
+    public ObservableList<Property> getProperties(){
+        return properties;
+    }
+
+    public ObjectProperty<LocalDateTime> dateMovedInProperty(){
+        return dateMovedIn;
+    }
+
+    public void setDateMovedIn(LocalDateTime dateMovedIn){
+        this.dateMovedIn.set(dateMovedIn);
+    }
+    /*public ObservableList<Property> unitNumberProperty(){
+        return unitNumberProperty();
+    }*/
+
+    public StringProperty unitNumberProperty(){
+        if(!properties.isEmpty()){
+            return properties.get(0).unitNumberProperty();
+        }
+        return new SimpleStringProperty("");
+    }
+
+    public ObservableList<Property> unitTypeProperty(){
+        return unitTypeProperty();
     }
 
     /*//Getter methods
