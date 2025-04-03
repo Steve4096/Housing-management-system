@@ -17,9 +17,10 @@ public class AdminController implements Initializable {
                 case DASHBOARD -> Admin_Parent.setCenter(Model.getInstance().getViewsfactory().getDashboard());
                 case REGISTRATION -> Admin_Parent.setCenter(Model.getInstance().getViewsfactory().getRegistrationwindow());
                 case TENANTS -> Admin_Parent.setCenter(Model.getInstance().getViewsfactory().getTenantslist());
-                case PAYMENTS -> Admin_Parent.setCenter(Model.getInstance().getViewsfactory().getPaymentsviewwindow());
+                case PAYMENTS -> Admin_Parent.setCenter(Model.getInstance().getViewsfactory().getPaymentsviewWindow());
                 case HOUSES -> Admin_Parent.setCenter(Model.getInstance().getViewsfactory().getHousesview());
                 case ADD_PROPERTY -> Admin_Parent.setCenter(Model.getInstance().getViewsfactory().getAddpropertywindow());
+                case UTILITY_LEVEL -> Admin_Parent.setCenter(Model.getInstance().getViewsfactory().showWaterLevelMonitoringWindow());
                 default -> Admin_Parent.setCenter(Model.getInstance().getViewsfactory().getDashboard());
             }
         });
