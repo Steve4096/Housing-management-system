@@ -14,7 +14,7 @@ public class WaterLevelMonitor {
     private final ScheduledExecutorService executorService= Executors.newScheduledThreadPool(1);
 
     public interface WaterLevelListener{
-        void onWaterLevelUpdate(int level);
+        void onWaterLevelUpdate(int level,boolean isRefilled);
     }
 
     public WaterLevelMonitor(WaterLevelListener listener){
@@ -28,14 +28,17 @@ public class WaterLevelMonitor {
             int change=random.nextInt(6)+1;
             waterlevel=Math.max(waterlevel-change,0); //Ensure it doesnt go below 0
 
+            boolean isRefilled=false;
+
             //Simulate refill
             if (waterlevel<20 && random.nextBoolean()){
                 waterlevel=100;
+                isRefilled=true;
                 System.out.println("Tank refilled");
             }
 
             //Notify UI
-            listener.onWaterLevelUpdate(waterlevel);
+            listener.onWaterLevelUpdate(waterlevel,isRefilled);
 
             //Stop if tank is empty
             if(waterlevel==0){
