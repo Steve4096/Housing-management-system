@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
-
-</AnchorPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="166.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant.TenantMenuController">
+   <children>
+      <AnchorPane prefHeight="29.0" prefWidth="166.0">
+         <children>
+            <Label layoutX="31.0" layoutY="6.0" text="Green" />
+            <Label layoutX="76.0" layoutY="6.0" text="View" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="487.0" prefWidth="166.0">
+         <Button fx:id="Dashboard_btn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Dashboard"/>
+         <Button fx:id="PayRent_btn" layoutX="14.0" layoutY="48.0" mnemonicParsing="false" text="Pay rent"/>
+         <Button fx:id="IssueNotice_btn" layoutX="14.0" layoutY="80.0" mnemonicParsing="false" text="Issue notice"/>
+         <Button fx:id="FileComplaint_btn" layoutX="14.0" layoutY="113.0" mnemonicParsing="false"
+                 text="File Complaint"/>
+         <Button fx:id="Receipts_btn" layoutX="14.0" layoutY="149.0" mnemonicParsing="false" text="Receipts"/>
+         <Button fx:id="Payments_btn" layoutX="14.0" layoutY="183.0" mnemonicParsing="false" text="Payments"/>
+         <Button layoutX="18.0" layoutY="218.0" mnemonicParsing="false" text="Maintenance"/>
+         <Button fx:id="Inbox_btn" layoutX="18.0" layoutY="255.0" mnemonicParsing="false" text="Inbox"/>
+         <Button fx:id="LogOut_btn" layoutX="13.0" layoutY="454.0" mnemonicParsing="false" text="Log out"/>
+      </AnchorPane>
+   </children>
+</VBox>

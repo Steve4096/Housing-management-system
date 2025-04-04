@@ -58,5 +58,8 @@ public class TenantMenuController implements Initializable {
         Stage stage=(Stage)LogOut_btn.getScene().getWindow();
         Model.getInstance().getViewsfactory().CloseWindow(stage);
         Model.getInstance().getViewsfactory().showLoginAccountSelectorWindow();
+        Model.getInstance().setTenantLoginSuccessFlag(false);
+        Model.getInstance().setTenant(null);
+        Model.getInstance().getViewsfactory().resetAllWindows();
     }
 }

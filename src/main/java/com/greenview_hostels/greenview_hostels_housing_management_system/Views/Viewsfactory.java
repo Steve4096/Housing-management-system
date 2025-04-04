@@ -6,14 +6,10 @@ import com.greenview_hostels.greenview_hostels_housing_management_system.Models.
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class Viewsfactory  {
     //Client views section
@@ -36,6 +32,7 @@ public class Viewsfactory  {
     private AnchorPane tenantsview;
     private ScrollPane registrationwindow;
     private AnchorPane addpropertywindow;
+    private AnchorPane waterLevelMonitoringWindow;
 
     //Viewsfactory Constructor
     public Viewsfactory(){
@@ -71,24 +68,22 @@ public class Viewsfactory  {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/Dashboard.fxml"));
                 dashboard=loader.load();
                 DashboardController dashboardController=loader.getController();
-                if (tenant!=null) {
-                    dashboardController.setTenant(tenant);
-                }else {
-                    System.out.println("Tenant is null");
+                dashboardController.setTenant(tenant);
                 }
-            }catch (Exception e){
+            catch (Exception e){
                 e.printStackTrace();
             }
         }
         return dashboard;
     }
 
-    public ScrollPane getRentPaymentWindow(){
+    public ScrollPane getRentPaymentWindow(Tenant tenant){
         if (rentPayment==null){
             try {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/PayRent.fxml"));
                 rentPayment=loader.load();
                 PayRentController controller=loader.getController();
+                controller.setTenant(tenant);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -102,11 +97,7 @@ public class Viewsfactory  {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/IssueNotice.fxml"));
                 fileNotice=loader.load();
                 IssueNoticeController issueNoticeController=loader.getController();
-                if (tenant!=null){
-                    issueNoticeController.setTenant(tenant);
-                }else {
-                    System.out.println("Tenant is null");
-                }
+                issueNoticeController.setTenant(tenant);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -141,11 +132,7 @@ public class Viewsfactory  {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/ServiceRequest.fxml"));
                 serviceRequest=loader.load();
                 ServiceRequestController serviceRequestController=loader.getController();
-                if(tenant!=null){
-                    serviceRequestController.setTenant(tenant);
-                }else {
-                    System.out.println("Tenant is null");
-                }
+                serviceRequestController.setTenant(tenant);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -157,6 +144,7 @@ public class Viewsfactory  {
         dashboard=null;
         serviceRequest=null;
         fileNotice=null;
+        rentPayment=null;
     }
 
     //Admin section
@@ -209,7 +197,7 @@ public class Viewsfactory  {
         return tenantsview;
     }
 
-    public AnchorPane getPaymentsviewwindow(){
+    public AnchorPane getPaymentsviewWindow(){
         if(paymentsview==null){
             try {
                 paymentsview=new FXMLLoader(getClass().getResource("/Fxml/Admin/Payments.fxml")).load();
@@ -241,6 +229,18 @@ public class Viewsfactory  {
             }
         }
         return addpropertywindow;
+    }
+
+    public AnchorPane showWaterLevelMonitoringWindow(){
+        if (waterLevelMonitoringWindow==null){
+            try {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Admin/WaterLevelMonitor.fxml"));
+                waterLevelMonitoringWindow=loader.load();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return waterLevelMonitoringWindow;
     }
 
 
