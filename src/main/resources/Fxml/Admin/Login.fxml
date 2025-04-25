@@ -2,15 +2,16 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Admin.LoginController">
-    <Label layoutX="53.0" layoutY="51.0" text="Username"/>
-    <TextField fx:id="Username_txtarea" layoutX="53.0" layoutY="68.0" promptText="Enter your username"/>
-    <Label layoutX="55.0" layoutY="137.0" text="Password"/>
-    <TextField fx:id="Pwd_txtarea" layoutX="53.0" layoutY="155.0" promptText="Enter your password"/>
-    <Button fx:id="Signin_btn" layoutX="102.0" layoutY="211.0" mnemonicParsing="false" text="Sign in"/>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../Styles/Login.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Admin.LoginController">
+    <Label layoutX="53.0" layoutY="98.0" styleClass="Labels" text="Username" />
+    <TextField fx:id="Username_txtarea" layoutX="53.0" layoutY="131.0" promptText="Enter your username" styleClass="TextField" />
+    <Label layoutX="55.0" layoutY="174.0" styleClass="Labels" text="Password" />
+    <Button fx:id="Signin_btn" layoutX="96.0" layoutY="276.0" mnemonicParsing="false" styleClass="Buttons" text="Sign in" />
+   <Label fx:id="Error_lbl" layoutX="55.0" layoutY="238.0" prefHeight="17.0" prefWidth="13.0" styleClass="Error-lbl" />
+   <Label layoutX="41.0" layoutY="14.0" styleClass="Welcome-back" text="ADMIN SIGN IN" />
+   <PasswordField fx:id="Pwd_pwdfield" layoutX="53.0" layoutY="213.0" promptText="Enter your password" styleClass="TextField" />
 </AnchorPane>

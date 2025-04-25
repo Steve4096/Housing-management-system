@@ -1,14 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
-
+<AnchorPane prefHeight="493.0" prefWidth="669.0" stylesheets="@../../Styles/TenantDashboard.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant.DashboardController">
+   <children>
+      <AnchorPane layoutY="237.0" prefHeight="253.0" prefWidth="669.0">
+         <children>
+            <AnchorPane layoutX="8.0" layoutY="3.0" prefHeight="243.0" prefWidth="235.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="6.0" text="User profile" />
+                  <Button fx:id="CloseProfileTab_btn" layoutX="197.0" layoutY="2.0" mnemonicParsing="false" text="X" />
+                  <Button layoutX="165.0" layoutY="2.0" mnemonicParsing="false" text="-" />
+                  <ImageView fitHeight="123.0" fitWidth="149.0" layoutX="44.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../Images/WhatsApp%20Image%202024-07-30%20at%2017.24.37.jpeg" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="31.0" layoutY="175.0" text="Name" />
+                  <Label layoutX="31.0" layoutY="192.0" text="House number" />
+                  <Label layoutX="30.0" layoutY="209.0" text="Rental status" />
+                  <Label fx:id="Name_lbl" layoutX="137.0" layoutY="175.0" text="Name_lbl" />
+                  <Label fx:id="House_no_lbl" layoutX="137.0" layoutY="192.0" text="Label" />
+                  <Label fx:id="Rental_status_lbl" layoutX="137.0" layoutY="209.0" text="Label" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="335.0" layoutY="7.0" prefHeight="243.0" prefWidth="313.0">
+               <children>
+                  <Label layoutX="20.0" layoutY="14.0" text="Personal information" />
+                  <Button fx:id="UpdateProfile_btn" layoutX="248.0" layoutY="10.0" mnemonicParsing="false" text="Update profile" />
+                  <Label layoutX="47.0" layoutY="96.0" text="ID No:" />
+                  <Label layoutX="47.0" layoutY="134.0" text="Phone No:" />
+                  <Label layoutX="47.0" layoutY="169.0" text="Email address:" />
+                  <Label fx:id="ID_lbl" layoutX="131.0" layoutY="96.0" text="ID_lbl" />
+                  <Label fx:id="Phone_no_lbl" layoutX="131.0" layoutY="134.0" text="Phone_no_lbl" />
+                  <Label fx:id="Email_address_lbl" layoutX="131.0" layoutY="169.0" text="Email_address_lbl" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <HBox layoutX="7.0" layoutY="29.0" prefHeight="153.0" prefWidth="649.0" styleClass="hbox">
+         <children>
+            <AnchorPane prefHeight="153.0" prefWidth="145.0" styleClass="Anchorpane">
+               <children>
+                  <Label layoutX="43.0" layoutY="14.0" styleClass="Labels" text="Total billed" />
+                  <Label layoutX="7.0" layoutY="77.0" styleClass="Labels" text="1,234.67" />
+                  <Label layoutX="14.0" layoutY="60.0" styleClass="Labels" text="KSHS." />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="153.0" prefWidth="153.0" styleClass="Anchorpane">
+               <children>
+                  <Label layoutX="46.0" layoutY="14.0" styleClass="Labels" text="Total paid" />
+                  <Label layoutX="13.0" layoutY="77.0" styleClass="Labels" text="354.45" />
+                  <Label layoutX="13.0" layoutY="59.0" styleClass="Labels" text="KSHS. " />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="153.0" prefWidth="171.0" styleClass="Anchorpane">
+               <children>
+                  <Label layoutX="37.0" layoutY="14.0" styleClass="Labels" text="Penalties due" />
+                  <Label layoutX="21.0" layoutY="77.0" styleClass="Labels" text="0.0" />
+                  <Label layoutX="22.0" layoutY="59.0" styleClass="Labels" text="KSHS." />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="Anchorpane">
+               <children>
+                  <Label layoutX="25.0" layoutY="14.0" styleClass="Labels" text="Total balance due" />
+                  <Label layoutX="12.0" layoutY="77.0" styleClass="Labels" text="345.40" />
+                  <Label layoutX="12.0" layoutY="59.0" styleClass="Labels" text="KSHS. " />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </children>
 </AnchorPane>

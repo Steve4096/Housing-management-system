@@ -1,0 +1,32 @@
+.hbox {
+    -fx-spacing: 10px;  /* Space between buttons */
+    -fx-alignment: center;  /* Center items horizontally */
+}
+
+.Buttons{
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-pref-height: 40;
+    -fx-pref-width: 120;
+}
+
+.Buttons:hover{
+    -fx-background-color: #800080;
+}
+
+.Anchorpane{
+    -fx-alignment: center;
+    -fx-pref-width: 120;
+    -fx-pref-height: 30;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+}
+
+.Anchorpane:hover{
+
+}
+
+.Labels{
+    -fx-font-weight: bold;
+
+}
