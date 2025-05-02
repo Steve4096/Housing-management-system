@@ -12,24 +12,26 @@ import java.io.IOException;
 
 public class App extends Application {
     @Override
-    public void start(Stage stage)  {
-        Stage splashStage=Model.getInstance().getViewsfactory().showSplashScreen();
+    public void start(Stage stage) {
+        Stage splashStage = Model.getInstance().getViewsfactory().showSplashScreen();
 
-        PauseTransition delay=new PauseTransition(Duration.seconds(5));
-        delay.setOnFinished(actionEvent ->{
-            splashStage.close();
-            OpenLoginAccountSelector();
+        PauseTransition delay = new PauseTransition(Duration.seconds(5));
+        delay.setOnFinished(actionEvent -> {
+                    splashStage.close();
+                    OpenLoginAccountSelector();
                 }
         );
         delay.play();
 
 
-
     }
 
-    private void OpenLoginAccountSelector(){
+    private void OpenLoginAccountSelector() {
         Model.getInstance().getViewsfactory().showLoginAccountSelectorWindow();
     }
-
-
 }
+
+
+
+
+

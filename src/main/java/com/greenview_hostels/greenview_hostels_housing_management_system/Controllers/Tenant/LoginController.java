@@ -5,10 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -18,11 +15,12 @@ import java.util.regex.Pattern;
 public class LoginController implements Initializable {
     public Button Back_btn;
     public TextField Email_textarea;
-    public TextField Pwd_txtarea;
+    //public TextField Pwd_txtarea;
     public Hyperlink Forgot_pwd_link;
     public Button Signin_btn;
     public Label Invalid_email_address_lbl;
     public Label Error_lbl;
+    public PasswordField Pwd_pwdfield;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -60,7 +58,7 @@ public class LoginController implements Initializable {
 
    private void login(){
         String email= Email_textarea.getText();
-        String password=Pwd_txtarea.getText();
+        String password=Pwd_pwdfield.getText();
         Model.getInstance().evaluateClientCredentials(email,password);
         if (Model.getInstance().getTenantLoginSuccessFlag()){
             successfulLogin();
@@ -82,13 +80,13 @@ public class LoginController implements Initializable {
 
    private void resetAllFields(){
         Email_textarea.setText("");
-        Pwd_txtarea.setText("");
+        Pwd_pwdfield.setText("");
    }
 
    private void setupLoginButton(){
         Signin_btn.disableProperty().bind(Bindings.createBooleanBinding(()->
-                Email_textarea.getText().trim().isEmpty() || Pwd_txtarea.getText().trim().isEmpty(),
-                Email_textarea.textProperty(),Pwd_txtarea.textProperty()));
+                Email_textarea.getText().trim().isEmpty() || Pwd_pwdfield.getText().trim().isEmpty(),
+                Email_textarea.textProperty(),Pwd_pwdfield.textProperty()));
    }
 }
 

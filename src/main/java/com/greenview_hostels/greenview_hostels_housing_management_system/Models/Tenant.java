@@ -11,18 +11,18 @@ import java.time.LocalDateTime;
 
 public class Tenant {
     private final StringProperty tenantID;
-    private final StringProperty fname;
-    private final StringProperty lname;
+    private final StringProperty tenantName;
+    //private final StringProperty lname;
     private final StringProperty phoneNo;
     private final StringProperty emailAddress;
 
     private final ObservableList<Property> properties;
     private final ObjectProperty<LocalDateTime> dateMovedIn;
 
-    public Tenant(String tenantID,String fname,String lname,String phoneNo,String emailAddress,LocalDateTime dateMovedIn){
+    public Tenant(String tenantID,String tenantName,String phoneNo,String emailAddress,LocalDateTime dateMovedIn){
         this.tenantID=new SimpleStringProperty(tenantID);
-        this.fname=new SimpleStringProperty(fname);
-        this.lname=new SimpleStringProperty(lname);
+        this.tenantName=new SimpleStringProperty(tenantName);
+        //this.lname=new SimpleStringProperty(lname);
         this.phoneNo=new SimpleStringProperty(phoneNo);
         this.emailAddress=new SimpleStringProperty(emailAddress);
         this.properties= FXCollections.observableArrayList();
@@ -80,13 +80,13 @@ public class Tenant {
         return tenantID;
     }
 
-    public StringProperty fnameProperty(){
-        return fname;
+    public StringProperty tenantNameProperty(){
+        return tenantName;
     }
 
-    public StringProperty lnameProperty(){
+    /*public StringProperty lnameProperty(){
         return lname;
-    }
+    }*/
 
     public StringProperty phoneNoProperty(){
         return phoneNo;
