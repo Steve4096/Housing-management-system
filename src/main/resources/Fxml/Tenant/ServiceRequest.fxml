@@ -6,18 +6,19 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant.ServiceRequestController">
+<AnchorPane prefHeight="447.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant.ServiceRequestController">
    <children>
-      <Button fx:id="Submit_btn" layoutX="82.0" layoutY="360.0" mnemonicParsing="false" text="Submit" />
+      <Button fx:id="Submit_btn" layoutX="87.0" layoutY="407.0" mnemonicParsing="false" text="Submit" />
       <Label layoutX="14.0" layoutY="14.0" text="SERVICE REQUEST FORM" />
       <Label layoutX="14.0" layoutY="31.0" text="Name:" />
-      <Label layoutX="14.0" layoutY="48.0" text="House no." />
+      <Label layoutX="14.0" layoutY="85.0" text="House no." />
       <Label fx:id="Name_lbl" layoutX="80.0" layoutY="31.0" text="Label" />
-      <Label fx:id="House_lbl" layoutX="80.0" layoutY="48.0" text="Label" />
-      <Label layoutX="17.0" layoutY="96.0" text="Request type" />
-      <ComboBox fx:id="House_or_Store_selector" layoutX="114.0" layoutY="52.0" prefHeight="25.0" prefWidth="200.0" promptText="Select house/store number" />
-      <ComboBox fx:id="Request_nature_selector" layoutX="19.0" layoutY="113.0" prefHeight="25.0" prefWidth="217.0" promptText="Select the nature of the request" />
-      <TextArea fx:id="Request_description_txtarea" layoutX="14.0" layoutY="147.0" prefHeight="200.0" prefWidth="423.0" promptText="Provide a description of the request" />
+      <Label fx:id="House_lbl" layoutX="80.0" layoutY="85.0" text="Label" />
+      <Label layoutX="14.0" layoutY="139.0" text="Request type" />
+      <ComboBox fx:id="House_or_Store_selector" layoutX="114.0" layoutY="81.0" prefHeight="25.0" prefWidth="200.0" promptText="Select house/store number" />
+      <ComboBox fx:id="Request_nature_selector" layoutX="14.0" layoutY="164.0" prefHeight="25.0" prefWidth="217.0" promptText="Select the nature of the request" />
+      <TextArea fx:id="Request_description_txtarea" layoutX="14.0" layoutY="198.0" prefHeight="200.0" prefWidth="423.0" promptText="Provide a description of the request" />
+      <Label layoutX="14.0" layoutY="56.0" text="ID No." />
+      <Label fx:id="IDNo_lbl" layoutX="80.0" layoutY="56.0" text="Label" />
    </children>
 </AnchorPane>

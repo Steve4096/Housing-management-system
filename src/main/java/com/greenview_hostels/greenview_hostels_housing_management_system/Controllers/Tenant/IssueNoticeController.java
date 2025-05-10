@@ -1,11 +1,13 @@
 package com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant;
 
+import com.greenview_hostels.greenview_hostels_housing_management_system.Models.Model;
+import com.greenview_hostels.greenview_hostels_housing_management_system.Models.Property;
 import com.greenview_hostels.greenview_hostels_housing_management_system.Models.Tenant;
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -16,16 +18,23 @@ public class IssueNoticeController  implements Initializable {
     public Button Submit_btn;
     public DatePicker Date_box;
     public Label Name_lbl;
+    public Label ID_No_lbl;
     public Label House_no_lbl;
     public Label error_lbl;
     public Label CurrDate_lbl;
+    public ComboBox HouseNo_Combobox;
 
     public Tenant tenant;
+
+
 
     public void setTenant(Tenant tenant) {
         this.tenant = tenant;
         loadTenantSpecificDetails();
+        Model.getInstance().populateHouseNumber(House_no_lbl,HouseNo_Combobox);
     }
+
+    Tenant loggedInTenant=Model.getInstance().getTenant();
 
     LocalDate currentDateTime=LocalDate.now();
     LocalDate thirtyDaysAfter =currentDateTime.plusDays(30);
@@ -38,10 +47,90 @@ public class IssueNoticeController  implements Initializable {
         //loadTenantSpecificDetails();
         isDateSelectedValid();
         CurrDate_lbl.setText(currentDateTime.format(dateTimeFormatter));
+        Submit_btn.setOnAction(actionEvent -> fileNotice());
     }
 
     private void loadTenantSpecificDetails(){
-        Name_lbl.setText(tenant.fnameProperty().get().concat(" ").concat(tenant.lnameProperty().get()));
+        //Name_lbl.setText(tenant.fnameProperty().get().concat(" ").concat(tenant.lnameProperty().get()));
+        Name_lbl.textProperty().unbind();
+        Name_lbl.textProperty().bind(Bindings.concat(tenant.tenantNameProperty()));
+        ID_No_lbl.textProperty().bind(Bindings.concat(tenant.tenantIDProperty()));
+    }
+
+    /*public void populateHouseNumber(Tenant tenant){
+        //ObservableList<Tenant> allTenants= Model.getInstance().showExistingTenantDetails();
+        //Tenant loggedInTenant=Model.getInstance().getTenant();
+        ObservableList<Property> properties= tenant.getProperties();
+        if(properties.size()==1){
+            House_no_lbl.setVisible(true);
+            House_no_lbl.setText(properties.get(0).unitNumberProperty().get());
+            HouseNo_Combobox.setVisible(false);
+        } else if (properties.size()>1) {
+            ObservableList<String> unitNumbers= FXCollections.observableArrayList();
+            for (Property property:properties){
+                unitNumbers.add(property.unitNumberProperty().get());
+            }
+            HouseNo_Combobox.setVisible(true);
+            HouseNo_Combobox.setItems(unitNumbers);
+            House_no_lbl.setVisible(false);
+        }else {
+            House_no_lbl.setVisible(true);
+            House_no_lbl.setText("No house found");
+            HouseNo_Combobox.setVisible(false);
+        }
+    }*/
+
+    /*public void populateHouseNumber(){
+        ObservableList<Tenant> allTenants=Model.getInstance().showExistingTenantDetails();
+        Tenant loggedInTenant=Model.getInstance().getTenant();
+
+        //Find the logged in tenant
+        Tenant matchingTenant=allTenants.stream()
+                .filter(tenant->tenant.tenantIDProperty().get().equals(loggedInTenant.tenantIDProperty().get()))
+                .findFirst()
+                .orElse(null);
+
+        if (matchingTenant!=null){
+            ObservableList<Property> properties=matchingTenant.getProperties();
+            if (properties.size()==1){
+                House_no_lbl.setVisible(true);
+                House_no_lbl.setText(properties.get(0).unitNumberProperty().get());
+                HouseNo_Combobox.setVisible(false);
+            } else if (properties.size()>1) {
+                ObservableList<String> unitNumbers=FXCollections.observableArrayList();
+                for (Property property:properties){
+                    unitNumbers.add(property.unitNumberProperty().get());
+                }
+                HouseNo_Combobox.setVisible(true);
+                HouseNo_Combobox.setItems(unitNumbers);
+                House_no_lbl.setVisible(false);
+            }else {
+                House_no_lbl.setVisible(true);
+                House_no_lbl.setText("No house found");
+                HouseNo_Combobox.setVisible(false);
+            }
+        }
+
+    }*/
+
+    private void fileNotice(){
+        //String tenantName=Name_lbl.getText();
+        String IDNumber=ID_No_lbl.getText();
+        Integer IDNo=Integer.parseInt(IDNumber);
+        //String unitNumber=House_no_lbl.getText();
+        String unitNumber;
+        if (HouseNo_Combobox.getValue() != null) {
+            unitNumber = HouseNo_Combobox.getValue().toString();
+        } else {
+            unitNumber = House_no_lbl.getText();
+        }
+
+        LocalDate date=Date_box.getValue();
+        if (isNoticeValid){
+            int unit_number=Integer.parseInt(unitNumber);
+            java.sql.Date sqlDate=java.sql.Date.valueOf(date);
+            Model.getInstance().getDatabaseConnection().fileNotice(IDNo,unit_number,sqlDate);
+        }
     }
 
     private void isDateSelectedValid(){
