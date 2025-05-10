@@ -1,0 +1,17 @@
+.Background{
+    -fx-background-color: white;
+}
+
+.Buttons{
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-min-width: 120px;
+    -fx-min-height: 40px;
+    -fx-max-width: 200px;
+    -fx-max-height: 60px;
+}
+
+.Buttons:hover{
+    -fx-background-color: #004040;
+}
