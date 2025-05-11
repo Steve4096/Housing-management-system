@@ -34,8 +34,6 @@ public class IssueNoticeController  implements Initializable {
         Model.getInstance().populateHouseNumber(House_no_lbl,HouseNo_Combobox);
     }
 
-    Tenant loggedInTenant=Model.getInstance().getTenant();
-
     LocalDate currentDateTime=LocalDate.now();
     LocalDate thirtyDaysAfter =currentDateTime.plusDays(30);
     DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -44,14 +42,12 @@ public class IssueNoticeController  implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //loadTenantSpecificDetails();
         isDateSelectedValid();
         CurrDate_lbl.setText(currentDateTime.format(dateTimeFormatter));
         Submit_btn.setOnAction(actionEvent -> fileNotice());
     }
 
     private void loadTenantSpecificDetails(){
-        //Name_lbl.setText(tenant.fnameProperty().get().concat(" ").concat(tenant.lnameProperty().get()));
         Name_lbl.textProperty().unbind();
         Name_lbl.textProperty().bind(Bindings.concat(tenant.tenantNameProperty()));
         ID_No_lbl.textProperty().bind(Bindings.concat(tenant.tenantIDProperty()));
@@ -114,10 +110,8 @@ public class IssueNoticeController  implements Initializable {
     }*/
 
     private void fileNotice(){
-        //String tenantName=Name_lbl.getText();
         String IDNumber=ID_No_lbl.getText();
         Integer IDNo=Integer.parseInt(IDNumber);
-        //String unitNumber=House_no_lbl.getText();
         String unitNumber;
         if (HouseNo_Combobox.getValue() != null) {
             unitNumber = HouseNo_Combobox.getValue().toString();
@@ -145,7 +139,6 @@ public class IssueNoticeController  implements Initializable {
                 isNoticeValid=false;
             }else {
                 isNoticeValid=true;
-                //showSuccessMessage();
             }
         });
     }
