@@ -130,6 +130,7 @@ public class IssueNoticeController  implements Initializable {
             int unit_number=Integer.parseInt(unitNumber);
             java.sql.Date sqlDate=java.sql.Date.valueOf(date);
             Model.getInstance().getDatabaseConnection().fileNotice(IDNo,unit_number,sqlDate);
+            showSuccessMessage();
         }
     }
 
