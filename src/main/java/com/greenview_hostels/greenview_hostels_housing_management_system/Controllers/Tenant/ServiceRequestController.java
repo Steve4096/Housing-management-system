@@ -64,6 +64,7 @@ public class ServiceRequestController implements Initializable {
         if (isRequestValid()){
             int unit_number=Integer.parseInt(unitNumber);
             Model.getInstance().getDatabaseConnection().fileComplaint(IDNo,unit_number,requestNature,requestDescription);
+            showSuccessMessage();
             resetAllFields();
         }
 
@@ -95,6 +96,13 @@ public class ServiceRequestController implements Initializable {
         alert.setHeaderText("");
         alert.setContentText("PLEASE PROVIDE A VALID COMPLAINT DESCRIPTION");
         alert.showAndWait();
+    }
+
+    private void showSuccessMessage(){
+        Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("");
+        alert.setTitle("SUCCESS");
+        alert.setContentText("YOUR COMPLAINT HAS BEEN SUBMITTED SUCCESSFULLY");
     }
 
 
