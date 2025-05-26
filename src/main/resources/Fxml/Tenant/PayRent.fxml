@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
-
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant.PayRentController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="-Infinity" prefHeight="700.0" prefWidth="363.0">
+   <children>
+      <Label layoutX="7.0" layoutY="6.0" text="Pay Rent" />
+      <Label layoutX="7.0" layoutY="23.0" text="Rent payment details" />
+      <Label layoutX="7.0" layoutY="40.0" text="You are about to top up the following product:" />
+      <AnchorPane layoutX="6.0" layoutY="64.0" prefHeight="135.0" prefWidth="357.0">
+         <children>
+            <Label layoutX="9.0" layoutY="68.0" text="House no." />
+            <Label layoutX="17.0" layoutY="95.0" text="Details:" />
+            <Label fx:id="HouseStore_lbl" layoutX="78.0" layoutY="68.0" text="38" />
+            <ComboBox fx:id="HouseStoreSelector" layoutX="93.0" layoutY="64.0" prefHeight="25.0" prefWidth="235.0" />
+               <Label layoutX="19.0" layoutY="14.0" text="Name:" />
+               <Label fx:id="Name_lbl" layoutX="91.0" layoutY="14.0" text="Name" />
+               <ComboBox fx:id="paymentType_cmbbox" layoutX="93.0" layoutY="95.0" prefHeight="25.0" prefWidth="235.0" />
+               <Label layoutX="22.0" layoutY="40.0" text="ID No." />
+               <Label fx:id="IdNo_lbl" layoutX="91.0" layoutY="40.0" text="IDNo_lbl" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="216.0" prefHeight="284.0" prefWidth="363.0">
+         <children>
+            <Label layoutX="14.0" layoutY="21.0" text="Greenview Housing Management System" />
+            <Label layoutX="14.0" layoutY="46.0" text="Current outstanding balance: KSHS." />
+            <Label fx:id="Balance_lbl" layoutX="218.0" layoutY="46.0" text="123" />
+            <Label layoutX="14.0" layoutY="78.0" text="Amount:" />
+            <TextField fx:id="Amount_txtfield" layoutX="14.0" layoutY="95.0" prefHeight="25.0" prefWidth="314.0" promptText="Enter amount" />
+            <Label fx:id="AmountErrorLbl" layoutX="14.0" layoutY="124.0" />
+            <Label fx:id="monthtoPayForLbl" layoutX="14.0" layoutY="159.0" text="Select Month to pay for:" />
+            <ComboBox fx:id="Monthselector" layoutX="14.0" layoutY="177.0" prefHeight="25.0" prefWidth="321.0" />
+               <Label fx:id="Errorlbl" layoutX="128.0" layoutY="233.0" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="Continue_btn" layoutX="122.0" layoutY="500.0" mnemonicParsing="false" text="Continue" />
+      <Button fx:id="Cancel_btn" layoutX="129.0" layoutY="535.0" mnemonicParsing="false" text="Cancel" />
+   </children>
 </AnchorPane>
+</ScrollPane>

@@ -40,34 +40,8 @@ public DatabaseConnection(){
 
     public void fileNotice(Integer IDNo,int Unit_number,Date selectedDate){
     try {
-        /*//Fetch tenant ID based on tenant name
-        ResultSet resultSet1;
-        PreparedStatement preparedStatement3;
-        String getTenantID="SELECT Tenant_ID FROM tenants where Tenant_name=?";
-        preparedStatement3=this.conn.prepareStatement(getTenantID);
-        preparedStatement3.setString(1,Tenant_name);
-        resultSet1=preparedStatement3.executeQuery();
-        String Tenant_ID=null;
-        if(resultSet1.next()){
-            Tenant_ID=resultSet1.getString("Tenant_ID");
-            System.out.println("Tenant_ID gotten"+Tenant_ID);
-        }*/
-
-
-
-        //Fetch property ID based on unit number
-        ResultSet resultSet;
-        PreparedStatement preparedStatement;
-        String getPropertyID="SELECT Property_ID FROM properties WHERE Unit_number=?";
-        preparedStatement=this.conn.prepareStatement(getPropertyID);
-        preparedStatement.setInt(1,Unit_number);
-        resultSet=preparedStatement.executeQuery();
-        int propertyID=0;
-        if(resultSet.next()){
-            propertyID=resultSet.getInt("Property_ID");
-            System.out.println("Property_ID gotten"+propertyID);
-        }
-
+        //Fetching property ID
+        int propertyID=getPropertyID(String.valueOf(Unit_number));
 
 
         //Insert into notices table
@@ -93,18 +67,7 @@ public DatabaseConnection(){
     public void fileComplaint(Integer IDNo,int Unit_number,String complaintType,String complaintDescription){
     try {
         //Fetch property ID based on unit number
-        ResultSet resultSet;
-        PreparedStatement preparedStatement;
-        String getpropertyID="SELECT Property_ID FROM properties WHERE Unit_number=?";
-        preparedStatement=this.conn.prepareStatement(getpropertyID);
-        preparedStatement.setInt(1,Unit_number);
-        resultSet=preparedStatement.executeQuery();
-        int PropertyID=0;
-        if(resultSet.isBeforeFirst()){
-            resultSet.next();
-            PropertyID=resultSet.getInt("Property_ID");
-            System.out.println("Property_ID gotten"+PropertyID);
-        }
+        int PropertyID=getPropertyID(String.valueOf(Unit_number));
 
         //Insert into complaints table
         PreparedStatement preparedStatement1;
@@ -118,6 +81,130 @@ public DatabaseConnection(){
     }catch (Exception e){
         e.printStackTrace();
     }
+    }
+
+    public void payDeposit(Integer IDNo,String unit_number,BigDecimal amount,String receiptNumber){
+    String makeDeposit="INSERT INTO PAYMENTS(Tenant_ID,Property_ID,Payment_type,Amount,Payment_date) values(?,?,'DEPOSIT',?,NOW())";
+    String makeReceipt ="INSERT INTO RECEIPTS(Payment_ID,Date_issued,Receipt_number,Issued_by)values(?,NOW(),?,'System')";
+       try {
+           int paymentIDGenerated=0;
+           conn.setAutoCommit(false);
+           //Fetch property ID
+           int propertyID=getPropertyID(unit_number);
+           //Insert into payments
+           try(PreparedStatement paymentStatement=this.conn.prepareStatement(makeDeposit,Statement.RETURN_GENERATED_KEYS)){
+               paymentStatement.setInt(1,IDNo);
+               paymentStatement.setInt(2,propertyID);
+               paymentStatement.setBigDecimal(3,amount);
+               int affectedRows=paymentStatement.executeUpdate();
+               if(affectedRows==0){
+                   System.out.println("0 rows affected. Failed to pay deposit");
+               }else {
+                   System.out.println("Paystatement completed successfully");
+               }
+
+               try (ResultSet generatedKeys=paymentStatement.getGeneratedKeys()){
+                   if (generatedKeys.next()){
+                       paymentIDGenerated=generatedKeys.getInt(1);
+                       System.out.println("Payment ID generated: "+paymentIDGenerated);
+                   }else {
+                       System.out.println("No payment ID generated");
+                   }
+               }
+           }
+
+           try(PreparedStatement storeReceipt=this.conn.prepareStatement(makeReceipt)){
+               storeReceipt.setInt(1,paymentIDGenerated);
+               storeReceipt.setString(2,receiptNumber);
+               storeReceipt.executeUpdate();
+               System.out.println("Receipt stored successfully");
+           }
+           this.conn.commit();
+       } catch (Exception e) {
+           try {
+              this.conn.rollback();
+           } catch (SQLException ex) {
+               System.err.println("Error while rolling back");
+               ex.printStackTrace();
+               //throw new RuntimeException(ex);
+           }
+           System.err.println("Failed to pay deposit");
+           e.printStackTrace();
+       }finally {
+               try {
+                   this.conn.setAutoCommit(true);
+               } catch (SQLException ex) {
+                   throw new RuntimeException(ex);
+           }
+       }
+    }
+
+    public boolean checkDepositPayment(int tenantID){
+    String checkDeposit="SELECT SUM(amount) FROM PAYMENTS WHERE Payment_type='DEPOSIT' AND Tenant_ID=?";
+    try (PreparedStatement preparedStatement=this.conn.prepareStatement(checkDeposit)){
+        preparedStatement.setInt(1,tenantID);
+        ResultSet resultSet=preparedStatement.executeQuery();
+        if(resultSet.next()){
+            BigDecimal deposit=resultSet.getBigDecimal(1);
+            return deposit!=null && deposit.compareTo(BigDecimal.valueOf(10000))==0;
+        }
+    }catch (SQLException e){
+        e.printStackTrace();
+    }
+    return false;
+    }
+
+    public void payRent(Integer IDNo,String unit_number,BigDecimal amount,Date rentMonth,String receiptNumber){
+        String makePayment="INSERT INTO PAYMENTS(Tenant_ID,Property_ID,Payment_type,Amount,Rent_month,Payment_date) values(?,?,'Rent',?,?,NOW())";
+        String makeReceipt ="INSERT INTO RECEIPTS(Payment_ID,Date_issued,Receipt_number,Issued_by)values(?,NOW(),?,'System')";
+        try {
+            int paymentIDGenerated=0;
+            this.conn.setAutoCommit(false);
+            //Fetch property ID
+            int propertyID=getPropertyID(unit_number);
+            //insert into payments table
+            try(PreparedStatement rentstatement=this.conn.prepareStatement(makePayment,Statement.RETURN_GENERATED_KEYS)){
+                rentstatement.setInt(1,IDNo);
+                rentstatement.setInt(2,propertyID);
+                rentstatement.setBigDecimal(3,amount);
+                rentstatement.setDate(4,rentMonth);
+                int affectedRows=rentstatement.executeUpdate();
+                if(affectedRows==0){
+                    System.err.println("0 rows affected. Failed to pay rent");
+                }else {
+                    System.out.println("Rent successfully paid");
+                }
+                try (ResultSet generatedKeys=rentstatement.getGeneratedKeys()){
+                    if (generatedKeys.next()){
+                         paymentIDGenerated=generatedKeys.getInt(1);
+                        System.out.println("Payment ID generated: "+paymentIDGenerated);
+                    }
+                }
+            }
+            try (PreparedStatement receiptStatement=this.conn.prepareStatement(makeReceipt)){
+                receiptStatement.setInt(1,paymentIDGenerated);
+                receiptStatement.setString(2,receiptNumber);
+                receiptStatement.executeUpdate();
+                System.out.println("Receipt stored successfully");
+            }
+            this.conn.commit();
+        } catch (Exception e) {
+            try {
+                this.conn.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Error while rolling back");
+                ex.printStackTrace();
+            }//throw new RuntimeException(e);
+            System.err.println("Failed to pay rent");
+            e.printStackTrace();
+        }
+            finally {
+                try {
+                    this.conn.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+        }
     }
 
 
@@ -138,7 +225,52 @@ public ResultSet getAdminData(String username,String password){
 return resultSet;
 }
 
-public void registerNewTenant(String Tenant_ID,String name,String Phone_no,String Email_address,String Unit_number){
+    public int countUnoccupiedHouses() {
+        String unoccupiedHouses = "SELECT COUNT(*) AS unoccupied_houses FROM properties LEFT JOIN occupancy ON properties.Property_ID=occupancy.Property_ID WHERE occupancy.Property_ID IS NULL OR occupancy.Date_vacated IS NOT NULL";
+        try (
+                PreparedStatement preparedStatement = this.conn.prepareStatement(unoccupiedHouses);
+                ResultSet resultSet = preparedStatement.executeQuery();
+        ) {
+            if (resultSet.next()) {
+                return resultSet.getInt("unoccupied_houses");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int countNoticesFiled(){
+    String noticesFiled="SELECT COUNT(*) AS notices_filed FROM notices";
+    try (
+            PreparedStatement preparedStatement=this.conn.prepareStatement(noticesFiled);
+            ResultSet resultSet=preparedStatement.executeQuery();
+    ){
+        if (resultSet.next()){
+            return resultSet.getInt("notices_filed");
+        }
+    }catch (SQLException e){
+        e.printStackTrace();
+    }
+    return 0;
+    }
+
+    public int countComplaintsFiled(){
+    String complaintsFiled="SELECT COUNT(*) AS complaints_filed FROM complaints";
+    try (
+            PreparedStatement preparedStatement=this.conn.prepareStatement(complaintsFiled);
+            ResultSet resultSet=preparedStatement.executeQuery();
+    ){
+        if (resultSet.next()){
+            return resultSet.getInt("complaints_filed");
+        }
+    }catch (SQLException e){
+        e.printStackTrace();
+    }
+    return 0;
+    }
+
+/*public void registerNewTenant(String Tenant_ID,String name,String Phone_no,String Email_address,String Unit_number){
     PreparedStatement preparedStatement;
 
     //Insert into tenants table
@@ -175,7 +307,46 @@ public void registerNewTenant(String Tenant_ID,String name,String Phone_no,Strin
     }catch (Exception e){
         e.printStackTrace();
     }
-}
+}*/
+    public void registerNewTenant(String Tenant_ID,String name,String Phone_no,String Email_address,String Unit_number){
+        String registerTenant="INSERT INTO tenants(Tenant_ID,Tenant_name,Phone_number,Email_address,Status,Password) values(?,?,?,?,?,'Active','Greenview2025')";
+        String addTenantToOccupancyTable="INSERT INTO occupancy(Property_ID,Tenant_ID,Date_occupied,Date_vacated) values(?,?,NOW(),NULL)";
+        try {
+            conn.setAutoCommit(false);
+
+            //Get Property ID
+            int propertyID=getPropertyID(Unit_number);
+
+            //Insert tenant
+            try (PreparedStatement tenantStatement=this.conn.prepareStatement(registerTenant)){
+                tenantStatement.setString(1,Tenant_ID);
+                tenantStatement.setString(2,name);
+                tenantStatement.setString(3,Phone_no);
+                tenantStatement.setString(4,Email_address);
+                tenantStatement.executeUpdate();
+            }
+
+            //Insert into occupancy
+            try (PreparedStatement occupancyStatement=this.conn.prepareStatement(addTenantToOccupancyTable)){
+                occupancyStatement.setInt(1,propertyID);
+                occupancyStatement.setString(2,Tenant_ID);
+                occupancyStatement.executeUpdate();
+            }
+            conn.commit();
+        }catch (Exception e){
+            try {
+                conn.rollback();
+            }catch (SQLException ex){
+                ex.printStackTrace();
+            }finally {
+                try {
+                    conn.setAutoCommit(true);
+                }catch (SQLException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
 
 public ResultSet showExistingTenantDetails(){
     PreparedStatement preparedStatement;
@@ -188,6 +359,18 @@ public ResultSet showExistingTenantDetails(){
         e.printStackTrace();
     }
     return resultSet;
+}
+
+public ResultSet showNoticesFiled(){
+        String noticesFiled="SELECT t.tenant_name,t.tenant_ID,n.date_notice_issued,n.date_intend_to_leave,p.property_ID,p.unit_number from tenants t JOIN notices n ON t.tenant_ID=n.tenant_ID JOIN properties p on n.property_ID=p.property_ID";
+        try (PreparedStatement preparedStatement=this.conn.prepareStatement(noticesFiled);
+             ResultSet resultSet=preparedStatement.executeQuery()){
+            return resultSet;
+        }catch (SQLException e){
+            System.err.println("Error while fetching notice details");
+            e.printStackTrace();
+            return null;
+        }
 }
 
 public void Addproperty(String unitNumber, String unitType, BigDecimal Rent_amount){
@@ -249,4 +432,21 @@ public void updateWaterTankTable(int level,int volume, String lastRefilled){
         throw new RuntimeException(e);
     }
 }
+
+//Used by both
+    public int getPropertyID(String unitNumber){
+        String getPropertyID="SELECT Property_ID FROM properties WHERE Unit_number=?";
+        try (PreparedStatement preparedStatement=this.conn.prepareStatement(getPropertyID)){
+            preparedStatement.setString(1,unitNumber);
+            try(ResultSet resultSet=preparedStatement.executeQuery()){
+                if(resultSet.next()){
+                    return resultSet.getInt("Property_ID");
+                } else {
+                    throw new RuntimeException("No property found with the given unit number" + unitNumber);
+                }
+            }
+        }catch (SQLException e){
+            throw new RuntimeException("Error while fetching property ID",e);
+        }
+    }
 }
