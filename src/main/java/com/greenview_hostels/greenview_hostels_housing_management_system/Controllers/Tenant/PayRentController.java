@@ -50,7 +50,6 @@ public class PayRentController implements Initializable {
         Model.getInstance().populateHouseNumber(HouseStore_lbl,HouseStoreSelector);
     }
 
-   // BigDecimal rentAmount = convertRentAmountToBigDecimal();
     String idNo;
     int id;
     //String receiptNumber=generateReceiptNumber();
@@ -90,7 +89,6 @@ public class PayRentController implements Initializable {
 
     private void loadTenantSpecificDetails(){
         Name_lbl.setText(tenant.tenantNameProperty().get());
-        //IdNo_lbl.setText(tenant.tenantIDProperty().get());
         IdNo_lbl.textProperty().bind(Bindings.concat(tenant.tenantIDProperty()));
     }
 
@@ -173,6 +171,8 @@ public class PayRentController implements Initializable {
                     Model.getInstance().getDatabaseConnection().payRent(id, unitNumber, rentAmount, date, receiptNumber);
                     showSuccessMessage("Your " + monthNameSelected + " rent has been paid successfully");
                     resetAllFields();
+                }else {
+                    Errorlbl.setText("Minimum rent amount should be 8500.");
                 }
         }
     }
@@ -201,7 +201,7 @@ public class PayRentController implements Initializable {
     }
 
     private boolean checkRentAmountPaid(){
-        BigDecimal minimumRentamount=new BigDecimal("100");
+        BigDecimal minimumRentamount=new BigDecimal("8500");
         BigDecimal rent=convertRentAmountToBigDecimal();
         return rent.compareTo(minimumRentamount)>=0;
     }
