@@ -153,6 +153,15 @@ public class Viewsfactory  {
         serviceRequest=null;
         fileNotice=null;
         rentPayment=null;
+        receiptsWindow=null;
+        paymentsWindow=null;
+        admindashboard=null;
+        housesview=null;
+        paymentsview=null;
+        tenantsview=null;
+        registrationwindow=null;
+        addpropertywindow=null;
+        waterLevelMonitoringWindow=null;
     }
 
     //Admin section

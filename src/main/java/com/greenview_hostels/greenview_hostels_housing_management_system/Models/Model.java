@@ -155,7 +155,8 @@ public class Model {
 
     public ObservableList<Receipt> receiptDetails(){
         ObservableList<Receipt> receipts=FXCollections.observableArrayList();
-        ResultSet resultSet=databaseConnection.printReceiptDetails();
+        Tenant tenant=Model.getInstance().getTenant();
+        ResultSet resultSet=databaseConnection.printReceiptDetails(tenant);
         try {
             while (resultSet.next()){
                 String tenantName=resultSet.getString("Tenant_name");
@@ -205,6 +206,51 @@ public class Model {
             throw new RuntimeException(e);
         }
         return properties;
+    }
+
+    public ObservableList<Payment> get5MostRecentPayments(){
+        ObservableList<Payment> payments=FXCollections.observableArrayList();
+        ResultSet resultSet=databaseConnection.get5MostRecentTransactions();
+        try {
+            while (resultSet.next()){
+                String tenantName=resultSet.getString("Tenant_name");
+                String unitNumber=resultSet.getString("Unit_number");
+                BigDecimal amount=resultSet.getBigDecimal("Amount");
+                String paymentType=resultSet.getString("Payment_type");
+                LocalDate date=resultSet.getObject("Payment_date",LocalDate.class);
+                LocalDate rentMonth=resultSet.getObject("Rent_month",LocalDate.class);
+
+                Payment payment=new Payment(tenantName,unitNumber,amount,paymentType,rentMonth,date);
+                payments.add(payment);
+                System.out.println("Payment fetched from database is:"+payment);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return payments;
+    }
+
+
+    public ObservableList<Payment> paymentsForAll(){
+        ObservableList<Payment> payments=FXCollections.observableArrayList();
+        ResultSet resultSet=databaseConnection.getPaymentsForAll();
+        try {
+            while (resultSet.next()){
+                String tenantName=resultSet.getString("Tenant_name");
+                String unitNumber=resultSet.getString("Unit_number");
+                BigDecimal amount=resultSet.getBigDecimal("Amount");
+                String paymentType=resultSet.getString("Payment_type");
+                LocalDate date=resultSet.getObject("Payment_date",LocalDate.class);
+                LocalDate rentMonth=resultSet.getObject("Rent_month",LocalDate.class);
+
+                Payment payment=new Payment(tenantName,unitNumber,amount,paymentType,rentMonth,date);
+                payments.add(payment);
+                System.out.println("Payment fetched from database is:"+payment);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return payments;
     }
 
     //Utility methods(used by both tenant and admin)

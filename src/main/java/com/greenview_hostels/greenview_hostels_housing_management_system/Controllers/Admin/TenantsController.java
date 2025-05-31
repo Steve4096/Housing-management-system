@@ -26,13 +26,15 @@ public class TenantsController implements Initializable  {
     public TableColumn PhoneNo;
     public TableColumn<Tenant,String> HouseNo;
     public TableColumn Date_moved_in;
+    public TableColumn Tname;
 
     private ObservableList<Tenant> tenantList;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Fname.setCellValueFactory(new PropertyValueFactory<>("fname"));
-        Lname.setCellValueFactory(new PropertyValueFactory<>("lname"));
+        //Fname.setCellValueFactory(new PropertyValueFactory<>("fname"));
+        //Lname.setCellValueFactory(new PropertyValueFactory<>("lname"));
+        Tname.setCellValueFactory(new PropertyValueFactory<>("tenantName"));
         PhoneNo.setCellValueFactory(new PropertyValueFactory<>("phoneNo"));
 
         HouseNo.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tenant, String>, ObservableValue<String>>() {

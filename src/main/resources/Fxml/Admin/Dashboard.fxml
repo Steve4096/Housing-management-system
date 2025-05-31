@@ -1,14 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
-
+<AnchorPane prefHeight="471.0" prefWidth="671.0" stylesheets="@../../Styles/AdminDashboard.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Admin.DashboardController">
+   <children>
+      <HBox layoutX="13.0" layoutY="21.0" prefHeight="70.0" prefWidth="647.0" styleClass="hbox">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="81.0" styleClass="Buttons" text="Send Notice" />
+            <Button mnemonicParsing="false" prefHeight="57.0" prefWidth="69.0" styleClass="Buttons" text="Send SMS" />
+            <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="126.0" styleClass="Buttons" text="Send Notification" />
+         </children>
+      </HBox>
+      <AnchorPane layoutX="25.0" layoutY="268.0" prefHeight="255.0" prefWidth="621.0" styleClass="hbox">
+         <children>
+            <Label layoutX="43.0" layoutY="14.0" text="Recent Transactions" />
+            <TableView fx:id="recentTransactionsTable" layoutX="5.0" layoutY="41.0" prefHeight="200.0" prefWidth="611.0">
+              <columns>
+                <TableColumn fx:id="tenantNameColumn" prefWidth="75.0" text="Tenant name" />
+                <TableColumn fx:id="unitNumberColumn" prefWidth="126.66667175292969" text="Unit number" />
+                  <TableColumn fx:id="amountPaidColumn" prefWidth="90.6666259765625" text="Amount paid" />
+                  <TableColumn fx:id="rentMonthColumn" minWidth="8.66668701171875" prefWidth="99.3333740234375" text="Month payed for" />
+                  <TableColumn fx:id="transactionDateColumn" prefWidth="112.6666259765625" text="Transaction date" />
+                  <TableColumn fx:id="paymentTypeColumn" prefWidth="104.00002034505212" text="Payment Type" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <HBox layoutX="8.0" layoutY="100.0" prefHeight="166.0" prefWidth="647.0" styleClass="hbox">
+         <children>
+            <AnchorPane prefHeight="166.0" prefWidth="133.0" styleClass="Anchorpane">
+               <children>
+                  <Label fx:id="RentPaid_lbl" layoutX="23.0" layoutY="65.0" styleClass="Labels" text="0" />
+                  <Label layoutX="21.0" layoutY="83.0" styleClass="Labels" text="Paid this month" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="166.0" prefWidth="137.0" styleClass="Anchorpane">
+               <children>
+                  <Label fx:id="PenaltiesPayable_lbl" layoutX="37.0" layoutY="65.0" styleClass="Labels" text="0" />
+                  <Label layoutX="35.0" layoutY="83.0" styleClass="Labels" text="Penalties" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="166.0" prefWidth="131.0" styleClass="Anchorpane">
+               <children>
+                  <Label fx:id="FreeHouses_lbl" layoutX="18.0" layoutY="65.0" styleClass="Labels" text="0" />
+                  <Label layoutX="18.0" layoutY="83.0" styleClass="Labels" text="Free houses" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="166.0" prefWidth="129.0" styleClass="Anchorpane">
+               <children>
+                  <Label fx:id="Complaints_lbl" layoutX="10.0" layoutY="65.0" styleClass="Labels" text="0" />
+                  <Label layoutX="8.0" layoutY="83.0" styleClass="Labels" text="Complaints" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="166.0" prefWidth="165.0" styleClass="Anchorpane">
+               <children>
+                  <Label fx:id="Notices_lbl" layoutX="10.0" layoutY="65.0" styleClass="Labels" text="0" />
+                  <Label layoutX="7.0" layoutY="83.0" styleClass="Labels" text="Notices" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </children>
 </AnchorPane>
