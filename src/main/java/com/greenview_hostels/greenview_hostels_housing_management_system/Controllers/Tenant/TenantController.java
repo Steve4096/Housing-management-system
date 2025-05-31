@@ -18,10 +18,11 @@ public class TenantController implements Initializable {
         Model.getInstance().getViewsfactory().getTenantSelectedMenuItem().addListener((observableValue, tenantMenuOptions, newVal) ->{
             switch (newVal){
                 case DASHBOARD -> loadDashboard();
-                case PAY_RENT -> Tenant_parent.setCenter(Model.getInstance().getViewsfactory().getRentPaymentWindow());
+                case PAY_RENT -> loadRentPayment();
                 case PAYMENTS -> Tenant_parent.setCenter(Model.getInstance().getViewsfactory().showPreviousPayments());
                 case ISSUE_NOTICE -> loadIssueNotice();
                 case SERVICE_REQUEST -> loadServiceRequest();
+                case RECEIPTS -> loadReceipts();
             }
         } );
         loadDashboard();
@@ -37,8 +38,18 @@ public class TenantController implements Initializable {
         Tenant_parent.setCenter(Model.getInstance().getViewsfactory().showFileNotice(tenant));
     }
 
+    private void loadRentPayment(){
+        Tenant tenant=Model.getInstance().getTenant();
+        Tenant_parent.setCenter(Model.getInstance().getViewsfactory().getRentPaymentWindow(tenant));
+    }
+
     private void loadServiceRequest(){
         Tenant tenant=Model.getInstance().getTenant();
         Tenant_parent.setCenter(Model.getInstance().getViewsfactory().showServiceRequest(tenant));
+    }
+
+    private void loadReceipts(){
+        Tenant tenant=Model.getInstance().getTenant();
+        Tenant_parent.setCenter(Model.getInstance().getViewsfactory().getReceiptsWindow(tenant));
     }
 }

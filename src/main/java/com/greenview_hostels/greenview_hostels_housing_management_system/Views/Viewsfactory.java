@@ -24,6 +24,7 @@ public class Viewsfactory  {
     private AnchorPane paymentsWindow;
 
 
+
     //Admin views section
     private ObjectProperty<AdminMenuOptions> adminSelectedMenuItem;
     private AnchorPane admindashboard;
@@ -105,13 +106,19 @@ public class Viewsfactory  {
         return fileNotice;
     }
 
-    /*public AnchorPane getReceiptsWindow() {
+    public AnchorPane getReceiptsWindow(Tenant tenant) {
         if(receiptsWindow==null){
             try {
-                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/"))
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/Receipts.fxml"));
+                receiptsWindow=loader.load();
+                ReceiptsController receiptsController=loader.getController();
+                receiptsController.setTenant(tenant);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-    }*/
+        return receiptsWindow;
+    }
 
     public AnchorPane showPreviousPayments(){
         if(paymentsWindow==null){
@@ -125,6 +132,7 @@ public class Viewsfactory  {
         }
         return paymentsWindow;
     }
+
 
     public AnchorPane showServiceRequest(Tenant tenant){
         if(serviceRequest==null){
