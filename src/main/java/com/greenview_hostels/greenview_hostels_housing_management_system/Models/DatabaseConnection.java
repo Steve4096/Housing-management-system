@@ -207,6 +207,34 @@ public DatabaseConnection(){
         }
     }
 
+    /*public ResultSet printReceiptDetails(){
+    String receiptDetails="SELECT t.Tenant_ID,t.Tenant_name,p.Property_ID,p.Unit_number,pt.Payment_type,pt.Rent_month,pt.Amount,pt.Payment_ID,r.Receipt_number,r.Date_issued FROM tenants t JOIN Payments pt on t.Tenant_ID=pt.Tenant_ID JOIN Properties p on p.Property_ID=pt.Property_ID JOIN RECEIPTS r on pt.Payment_ID=r.Payment_ID";
+    try (PreparedStatement preparedStatement=this.conn.prepareStatement(receiptDetails)){
+        ResultSet resultSet=preparedStatement.executeQuery();
+        return resultSet;
+    }catch (SQLException e){
+        e.printStackTrace();
+        return null;
+    }
+    }*/
+
+    public ResultSet printReceiptDetails() {
+        String receiptDetails = "SELECT t.Tenant_ID, t.Tenant_name, p.Property_ID, p.Unit_number,pt.Payment_type, pt.Rent_month, pt.Amount, pt.Payment_ID,r.Receipt_number, r.Date_issued FROM tenants t JOIN Payments pt ON t.Tenant_ID = pt.Tenant_ID JOIN Properties p ON p.Property_ID = pt.Property_ID JOIN RECEIPTS r ON pt.Payment_ID = r.Payment_ID";
+
+        ResultSet resultSet = null;
+
+        try {
+            PreparedStatement preparedStatement = this.conn.prepareStatement(receiptDetails);
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultSet;
+    }
+
+
+
 
 
     //Admin section
@@ -229,7 +257,7 @@ return resultSet;
         String unoccupiedHouses = "SELECT COUNT(*) AS unoccupied_houses FROM properties LEFT JOIN occupancy ON properties.Property_ID=occupancy.Property_ID WHERE occupancy.Property_ID IS NULL OR occupancy.Date_vacated IS NOT NULL";
         try (
                 PreparedStatement preparedStatement = this.conn.prepareStatement(unoccupiedHouses);
-                ResultSet resultSet = preparedStatement.executeQuery();
+                ResultSet resultSet = preparedStatement.executeQuery()
         ) {
             if (resultSet.next()) {
                 return resultSet.getInt("unoccupied_houses");
@@ -244,7 +272,7 @@ return resultSet;
     String noticesFiled="SELECT COUNT(*) AS notices_filed FROM notices";
     try (
             PreparedStatement preparedStatement=this.conn.prepareStatement(noticesFiled);
-            ResultSet resultSet=preparedStatement.executeQuery();
+            ResultSet resultSet=preparedStatement.executeQuery()
     ){
         if (resultSet.next()){
             return resultSet.getInt("notices_filed");
@@ -259,7 +287,7 @@ return resultSet;
     String complaintsFiled="SELECT COUNT(*) AS complaints_filed FROM complaints";
     try (
             PreparedStatement preparedStatement=this.conn.prepareStatement(complaintsFiled);
-            ResultSet resultSet=preparedStatement.executeQuery();
+            ResultSet resultSet=preparedStatement.executeQuery()
     ){
         if (resultSet.next()){
             return resultSet.getInt("complaints_filed");
@@ -270,44 +298,6 @@ return resultSet;
     return 0;
     }
 
-/*public void registerNewTenant(String Tenant_ID,String name,String Phone_no,String Email_address,String Unit_number){
-    PreparedStatement preparedStatement;
-
-    //Insert into tenants table
-    try {
-        String RegisterTenant="INSERT INTO tenants(Tenant_ID,Tenant_name,Phone_number,Email_address,Status,Password) values(?,?,?,?,'Active','Greenview2025')";
-        preparedStatement=this.conn.prepareStatement(RegisterTenant);
-        preparedStatement.setString(1,Tenant_ID);
-        preparedStatement.setString(2,name);
-        //preparedStatement.setString(3,Lname);
-        preparedStatement.setString(3,Phone_no);
-        preparedStatement.setString(4,Email_address);
-        preparedStatement.executeUpdate();
-
-        //Fetch corresponding property_ID based on house number selected
-        String getPropertyID="SELECT Property_ID FROM properties WHERE Unit_number=?";
-        PreparedStatement preparedStatement1;
-        ResultSet resultSet;
-        preparedStatement1=this.conn.prepareStatement(getPropertyID);
-        preparedStatement1.setString(1,Unit_number);
-        resultSet= preparedStatement1.executeQuery();
-        int propertyID=0;
-        if(resultSet.next()){
-            propertyID=resultSet.getInt("Property_ID");
-            System.out.println("Property_ID gotten"+propertyID);
-        }
-
-        //After getting the property_ID based on the unit_number entered,store it in the occupancy table along with the other relevant details
-        PreparedStatement occupancy;
-        String addTenantToOccupancyTable="INSERT INTO occupancy(Property_ID,Tenant_ID,Date_occupied,Date_vacated) values(?,?,NOW(),NULL)";
-        occupancy=this.conn.prepareStatement(addTenantToOccupancyTable);
-        occupancy.setInt(1,propertyID);
-        occupancy.setString(2,Tenant_ID);
-        occupancy.executeUpdate();
-    }catch (Exception e){
-        e.printStackTrace();
-    }
-}*/
     public void registerNewTenant(String Tenant_ID,String name,String Phone_no,String Email_address,String Unit_number){
         String registerTenant="INSERT INTO tenants(Tenant_ID,Tenant_name,Phone_number,Email_address,Status,Password) values(?,?,?,?,?,'Active','Greenview2025')";
         String addTenantToOccupancyTable="INSERT INTO occupancy(Property_ID,Tenant_ID,Date_occupied,Date_vacated) values(?,?,NOW(),NULL)";

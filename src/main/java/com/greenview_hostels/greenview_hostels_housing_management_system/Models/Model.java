@@ -12,8 +12,10 @@ import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -93,16 +95,11 @@ public class Model {
                     Tenant loggedInTenant=new Tenant(tenantID,tenantName,phoneNo,emailAddress,dateMovedIn);
                     loggedInTenant.tenantIDProperty().set(resultSet.getString("Tenant_ID"));
                     loggedInTenant.tenantNameProperty().set(resultSet.getString("Tenant_name"));
-                    //loggedInTenant.lnameProperty().set(resultSet.getString("Last_name"));
                     loggedInTenant.phoneNoProperty().set(resultSet.getString("Phone_number"));
                     loggedInTenant.emailAddressProperty().set(resultSet.getString("Email_address"));
                     tenantLoginSuccessFlag=true;
                     Model.getInstance().setTenant(loggedInTenant);
 
-                    /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Tenant/IssueNotice.fxml"));
-                    Parent root = loader.load(); // Load the FXML file
-                    IssueNoticeController noticeController = loader.getController(); // Get existing controller
-                    noticeController.setTenant(loggedInTenant); // Pass tenant data to the controller*/
 
                     Model.getInstance().getViewsfactory().showFileNotice(loggedInTenant);
 
@@ -119,29 +116,6 @@ public class Model {
             throw new RuntimeException(e);
         }
     }
-
-    /*public void populateHouseNumber(Tenant tenant, Label houseNoLabel, ComboBox<String> houseNoComboBox) {
-        ObservableList<Tenant> allTenants=model.showExistingTenantDetails();
-        ObservableList<Property> properties = tenant.getProperties();
-
-        if (properties.size() == 1) {
-            houseNoLabel.setVisible(true);
-            houseNoLabel.setText(properties.get(0).unitNumberProperty().get());
-            houseNoComboBox.setVisible(false);
-        } else if (properties.size() > 1) {
-            ObservableList<String> unitNumbers = FXCollections.observableArrayList();
-            for (Property property : properties) {
-                unitNumbers.add(property.unitNumberProperty().get());
-            }
-            houseNoComboBox.setVisible(true);
-            houseNoComboBox.setItems(unitNumbers);
-            houseNoLabel.setVisible(false);
-        } else {
-            houseNoLabel.setVisible(true);
-            houseNoLabel.setText("No house found");
-            houseNoComboBox.setVisible(false);
-        }
-    }*/
 
     public void populateHouseNumber(Label houseNoLabel, ComboBox<String> houseNoComboBox) {
         ObservableList<Tenant> allTenants = showExistingTenantDetails();
@@ -179,6 +153,29 @@ public class Model {
         }
     }
 
+    public ObservableList<Receipt> receiptDetails(){
+        ObservableList<Receipt> receipts=FXCollections.observableArrayList();
+        ResultSet resultSet=databaseConnection.printReceiptDetails();
+        try {
+            while (resultSet.next()){
+                String tenantName=resultSet.getString("Tenant_name");
+                String unitNumber=resultSet.getString("Unit_number");
+                String receiptNumber=resultSet.getString("Receipt_number");
+                BigDecimal amount=resultSet.getBigDecimal("Amount");
+                String paymentType=resultSet.getString("Payment_type");
+                LocalDate monthPaidFor=resultSet.getObject("Rent_month",LocalDate.class);
+                LocalDate dateIssued=resultSet.getObject("Date_issued",LocalDate.class);
+
+                Receipt receipt=new Receipt(tenantName,unitNumber,receiptNumber,amount,paymentType,monthPaidFor,dateIssued);
+                receipts.add(receipt);
+                System.out.println("Receipt fetched from database is:"+receipt);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return receipts;
+    }
+
     //Admin methods
     public List<String> showAvailableProperties() {
         ResultSet resultSet = databaseConnection.ReturnUnoccuppiedhouses();
@@ -193,70 +190,6 @@ public class Model {
         return availableProperties;
     }
 
-    /*public ObservableList<Tenant> showExistingTenantDetails() {
-        ObservableList<Tenant> showExistingTenants=FXCollections.observableArrayList();
-        ResultSet resultSet = databaseConnection.showExistingTenantDetails();
-        try {
-            while (resultSet.next()) {
-                System.out.println("Retrieved tenant:"+resultSet.getString("First_name"));
-                showExistingTenants.add(new Tenant(
-                        resultSet.getString("Tenant_ID"),
-                        resultSet.getString("First_name"),
-                        resultSet.getString("Last_name"),
-                        resultSet.getString("Phone_number"),
-                        resultSet.getString("Email_address")
-                ));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return showExistingTenants;
-    }*/
-
-    /*public ObservableList<Tenant> showExistingTenantDetails() {
-        ObservableList<Tenant> tenantDetails = FXCollections.observableArrayList();
-        ResultSet resultSet = databaseConnection.showExistingTenantDetails();
-
-        try {
-            while (resultSet.next()) {
-                String tenantID = resultSet.getString("Tenant_ID");
-
-                // Check if tenant already exists in the list
-                Tenant existingTenant = tenantDetails.stream()
-                        .filter(tenant1 -> tenant1.tenantIDProperty().get().equals(tenantID))
-                        .findFirst()
-                        .orElse(null);
-
-                // Create a new tenant if not found
-                if (existingTenant == null) {
-                    existingTenant = new Tenant(
-                            tenantID,
-                            resultSet.getString("First_name"),
-                            resultSet.getString("Last_name"),
-                            resultSet.getString("Phone_number"),
-                            resultSet.getString("Email_address")
-                    );
-                    tenantDetails.add(existingTenant);
-                }
-
-                // Create and add the tenant's property
-                Property property = new Property(
-                        resultSet.getString("Unit_number"),
-                        resultSet.getString("Unit_type")
-                );
-                existingTenant.addProperty(property);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Prints the error instead of crashing
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close(); // Ensure ResultSet is closed
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return tenantDetails;
-    }*/
 
     public ObservableList<Property> showExistingProperties(){
         ObservableList<Property> properties=FXCollections.observableArrayList();

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
-
+<AnchorPane prefHeight="400.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant.ReceiptsController">
+   <children>
+      <TableView fx:id="receiptsTableView" layoutX="10.0" layoutY="111.0" prefHeight="274.0" prefWidth="632.0">
+        <columns>
+          <TableColumn fx:id="tenantNamecolumn" prefWidth="87.33331298828125" text="Tenant name" />
+          <TableColumn fx:id="unitNumberColumn" prefWidth="63.333343505859375" text="Unit number" />
+            <TableColumn fx:id="receiptNumberColumn" prefWidth="75.0" text="Receipt number" />
+            <TableColumn fx:id="amountColumn" prefWidth="75.0" text="Amount" />
+            <TableColumn fx:id="paymentTypeColumn" prefWidth="88.0" text="Payment type" />
+            <TableColumn fx:id="monthPaidForColumn" prefWidth="114.66665649414062" text="Month paid for" />
+            <TableColumn fx:id="dateIssuedColumn" prefWidth="126.66668701171875" text="Date issued" />
+        </columns>
+      </TableView>
+   </children>
 </AnchorPane>
