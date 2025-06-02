@@ -27,8 +27,8 @@ public class ReceiptsController implements Initializable {
     public TableColumn<Receipt, LocalDate> monthPaidForColumn;
     public TableColumn<Receipt,LocalDate> dateIssuedColumn;
     public TableView receiptsTableView;
-    public ComboBox paymentTypeFilterCombobox;
-    public ComboBox monthFilterCombobox;
+    public ComboBox<String> paymentTypeFilterCombobox;
+    public ComboBox<String> monthFilterCombobox;
     public TextField amountFilterTextBox;
 
     public Tenant tenant;
@@ -46,6 +46,11 @@ public class ReceiptsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         configureColumns();
         loadData();
+        ObservableList<String> paymentTypeOptions = FXCollections.observableArrayList("All", "Rent", "Deposit");
+        ObservableList<String> months=FXCollections.observableArrayList("All","January","February","March","April","May","June","July","August","September","October","November","December");
+        paymentTypeFilterCombobox.setItems(paymentTypeOptions);
+        monthFilterCombobox.setItems(months);
+        setupFilters();
     }
 
     private void configureColumns(){
@@ -79,4 +84,59 @@ public class ReceiptsController implements Initializable {
         masterData.addAll(Model.getInstance().receiptDetails());
     }
 
-}
+    public void filterData(){
+        FilteredList<Receipt> filteredData = new FilteredList<>(masterData, p -> true);
+    }
+
+
+    private void setupFilters() {
+        // Load all data
+        ObservableList<Receipt> receipts = Model.getInstance().receiptDetails();
+        masterData.setAll(receipts);
+
+       // Default selections
+        paymentTypeFilterCombobox.getSelectionModel().selectFirst();
+        monthFilterCombobox.getSelectionModel().selectFirst();
+
+        // Wrap in FilteredList
+        FilteredList<Receipt> filteredData = new FilteredList<>(masterData, p -> true);
+
+        // Listeners to apply filters
+        ChangeListener<Object> filterListener = (obs, oldVal, newVal) -> filteredData.setPredicate(receipt -> {
+            // Payment type filter
+            boolean paymentTypeMatches = paymentTypeFilterCombobox.getValue().equals("All") ||
+                    receipt.getPaymentType().equalsIgnoreCase(paymentTypeFilterCombobox.getValue());
+
+            // Amount filter
+            boolean amountMatches = amountFilterTextBox.getText().isEmpty() ||
+                    receipt.getAmount().toPlainString().contains(amountFilterTextBox.getText());
+
+            // Rent month filter — handle null rentMonth
+            boolean monthMatches;
+            if (monthFilterCombobox.getValue().equals("All")) {
+                monthMatches = true;
+            } else {
+                if (receipt.getRentMonth() == null) {
+                    monthMatches = false;
+                } else {
+                    String receiptMonth = receipt.getRentMonth().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+                    monthMatches = receiptMonth.equalsIgnoreCase(monthFilterCombobox.getValue());
+                }
+            }
+
+            return paymentTypeMatches && amountMatches && monthMatches;
+        });
+
+        paymentTypeFilterCombobox.valueProperty().addListener(filterListener);
+        amountFilterTextBox.textProperty().addListener(filterListener);
+        monthFilterCombobox.valueProperty().addListener(filterListener);
+
+// SortedList for TableView sorting
+        SortedList<Receipt> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(receiptsTableView.comparatorProperty());
+
+        receiptsTableView.setItems(sortedData);
+
+    }
+
+    }

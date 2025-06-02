@@ -31,4 +31,23 @@ public class Receipt {
     public StringProperty paymentTypeProperty() { return paymentType; }
     public ObjectProperty<LocalDate> rentMonthProperty() { return rentMonth; }
     public ObjectProperty<LocalDate> dateIssuedProperty() { return dateIssued; }
+
+
+    // Standard getters
+    public String getTenantName() { return tenantName.get(); }
+    public String getUnitNumber() { return unitNumber.get(); }
+    public String getReceiptNumber() { return receiptNumber.get(); }
+    public BigDecimal getAmount() { return amount.get(); }
+    public String getPaymentType() { return paymentType.get(); }
+    public LocalDate getRentMonth() { return rentMonth.get(); }
+    public LocalDate getDateIssued() { return dateIssued.get(); }
+
+    // Standard setters
+    public void setTenantName(String name) { tenantName.set(name); }
+    public void setUnitNumber(String unit) { unitNumber.set(unit); }
+    public void setReceiptNumber(String receipt) { receiptNumber.set(receipt); }
+    public void setAmount(BigDecimal amt) { amount.set(amt); }
+    public void setPaymentType(String type) { paymentType.set(type); }
+    public void setRentMonth(LocalDate month) { rentMonth.set(month); }
+    public void setDateIssued(LocalDate date) { dateIssued.set(date); }
 }
