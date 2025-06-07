@@ -53,61 +53,6 @@ public class IssueNoticeController  implements Initializable {
         ID_No_lbl.textProperty().bind(Bindings.concat(tenant.tenantIDProperty()));
     }
 
-    /*public void populateHouseNumber(Tenant tenant){
-        //ObservableList<Tenant> allTenants= Model.getInstance().showExistingTenantDetails();
-        //Tenant loggedInTenant=Model.getInstance().getTenant();
-        ObservableList<Property> properties= tenant.getProperties();
-        if(properties.size()==1){
-            House_no_lbl.setVisible(true);
-            House_no_lbl.setText(properties.get(0).unitNumberProperty().get());
-            HouseNo_Combobox.setVisible(false);
-        } else if (properties.size()>1) {
-            ObservableList<String> unitNumbers= FXCollections.observableArrayList();
-            for (Property property:properties){
-                unitNumbers.add(property.unitNumberProperty().get());
-            }
-            HouseNo_Combobox.setVisible(true);
-            HouseNo_Combobox.setItems(unitNumbers);
-            House_no_lbl.setVisible(false);
-        }else {
-            House_no_lbl.setVisible(true);
-            House_no_lbl.setText("No house found");
-            HouseNo_Combobox.setVisible(false);
-        }
-    }*/
-
-    /*public void populateHouseNumber(){
-        ObservableList<Tenant> allTenants=Model.getInstance().showExistingTenantDetails();
-        Tenant loggedInTenant=Model.getInstance().getTenant();
-
-        //Find the logged in tenant
-        Tenant matchingTenant=allTenants.stream()
-                .filter(tenant->tenant.tenantIDProperty().get().equals(loggedInTenant.tenantIDProperty().get()))
-                .findFirst()
-                .orElse(null);
-
-        if (matchingTenant!=null){
-            ObservableList<Property> properties=matchingTenant.getProperties();
-            if (properties.size()==1){
-                House_no_lbl.setVisible(true);
-                House_no_lbl.setText(properties.get(0).unitNumberProperty().get());
-                HouseNo_Combobox.setVisible(false);
-            } else if (properties.size()>1) {
-                ObservableList<String> unitNumbers=FXCollections.observableArrayList();
-                for (Property property:properties){
-                    unitNumbers.add(property.unitNumberProperty().get());
-                }
-                HouseNo_Combobox.setVisible(true);
-                HouseNo_Combobox.setItems(unitNumbers);
-                House_no_lbl.setVisible(false);
-            }else {
-                House_no_lbl.setVisible(true);
-                House_no_lbl.setText("No house found");
-                HouseNo_Combobox.setVisible(false);
-            }
-        }
-
-    }*/
 
     private void fileNotice(){
         String IDNumber=ID_No_lbl.getText();
@@ -120,11 +65,15 @@ public class IssueNoticeController  implements Initializable {
         }
 
         LocalDate date=Date_box.getValue();
-        if (isNoticeValid){
-            int unit_number=Integer.parseInt(unitNumber);
-            java.sql.Date sqlDate=java.sql.Date.valueOf(date);
-            Model.getInstance().getDatabaseConnection().fileNotice(IDNo,unit_number,sqlDate);
-            showSuccessMessage();
+        if(!Model.getInstance().getDatabaseConnection().checkIfNoticeFiled(IDNo)) {
+            if (isNoticeValid) {
+                int unit_number = Integer.parseInt(unitNumber);
+                java.sql.Date sqlDate = java.sql.Date.valueOf(date);
+                Model.getInstance().getDatabaseConnection().fileNotice(IDNo, unit_number, sqlDate);
+                showSuccessMessage();
+            }
+        }else {
+            showError("YOU HAVE ALREADY FILED A NOTICE. YOU CAN'T FILE ANOTHER WHILE THE OTHER IS PENDING");
         }
     }
 
@@ -132,10 +81,10 @@ public class IssueNoticeController  implements Initializable {
         Date_box.valueProperty().addListener((observableValue, localDate, newVal) ->
         {
             if (newVal==null){
-                showNullDateErrorAlert();
+                showError("PLEASE SELECT A VALID DATE");
                 isNoticeValid=false;
             } else if (newVal.isBefore(thirtyDaysAfter)) {
-                showInvalidDateErrorMessage();
+                showError("ERROR!THE SELECTED DATE SHOULD BE 30 DAYS MORE THAN THE CURRENT DATE");
                 isNoticeValid=false;
             }else {
                 isNoticeValid=true;
@@ -143,21 +92,14 @@ public class IssueNoticeController  implements Initializable {
         });
     }
 
-    private void showNullDateErrorAlert(){
+    private void showError(String message){
         Alert alert=new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR");
         alert.setHeaderText("");
-        alert.setContentText("PLEASE SELECT A VALID DATE");
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
-    private void showInvalidDateErrorMessage(){
-        Alert alert=new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR");
-        alert.setHeaderText("");
-        alert.setContentText("ERROR!THE SELECTED DATE SHOULD BE 30 DAYS MORE THAN THE CURRENT DATE");
-        alert.showAndWait();
-    }
 
     private void showSuccessMessage(){
         Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
