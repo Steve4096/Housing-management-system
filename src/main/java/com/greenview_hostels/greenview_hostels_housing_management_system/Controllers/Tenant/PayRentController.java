@@ -114,6 +114,14 @@ public class PayRentController implements Initializable {
         return "RCPT-"+datePart+"-"+randomNumber;
     }
 
+//    private boolean checkPenalty(){
+//        LocalDate currentDate=LocalDate.now();
+//        LocalDate fiveDays=currentDate.minusDays(5);
+//        try {
+//
+//        }
+//    }
+
 
     private void makePayment() {
         BigDecimal rentAmount = convertRentAmountToBigDecimal();

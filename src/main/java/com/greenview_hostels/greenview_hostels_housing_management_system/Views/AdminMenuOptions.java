@@ -5,6 +5,9 @@ public enum AdminMenuOptions {
     REGISTRATION,
     TENANTS,
     PAYMENTS,
+    NOTICES,
+    COMPLAINTS,
     HOUSES,
-    ADD_PROPERTY
+    ADD_PROPERTY,
+    UTILITY_LEVEL
 }

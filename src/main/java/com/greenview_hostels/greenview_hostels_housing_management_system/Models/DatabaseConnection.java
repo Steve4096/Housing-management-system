@@ -226,7 +226,6 @@ public class DatabaseConnection {
     public ResultSet printReceiptDetails(Tenant tenant) {
         String receiptDetails = "SELECT t.Tenant_ID, t.Tenant_name, p.Property_ID, p.Unit_number,pt.Payment_type, pt.Rent_month, pt.Amount, pt.Payment_ID,r.Receipt_number, r.Date_issued FROM tenants t JOIN Payments pt ON t.Tenant_ID = pt.Tenant_ID JOIN Properties p ON p.Property_ID = pt.Property_ID JOIN RECEIPTS r ON pt.Payment_ID = r.Payment_ID where t.Tenant_ID=?";
         ResultSet resultSet = null;
-
         try {
             PreparedStatement preparedStatement = this.conn.prepareStatement(receiptDetails);
             preparedStatement.setString(1, tenant.tenantIDProperty().get());
@@ -235,6 +234,19 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
 
+        return resultSet;
+    }
+
+    public ResultSet printPaymentDetails(Tenant tenant){
+        String paymentDetails="SELECT t.Tenant_ID,t.Tenant_name,p.Property_ID,p.Unit_number,pt.Tenant_ID,pt.Property_ID,pt.Payment_type, pt.Rent_month, pt.Amount, pt.Payment_date FROM tenants t JOIN payments pt on t.Tenant_ID=pt.Tenant_ID JOIN properties p on p.Property_ID=pt.Property_ID where t.Tenant_ID=?";
+        ResultSet resultSet=null;
+        try {
+            PreparedStatement preparedStatement=this.conn.prepareStatement(paymentDetails);
+            preparedStatement.setString(1,tenant.tenantIDProperty().get());
+            resultSet=preparedStatement.executeQuery();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
         return resultSet;
     }
 

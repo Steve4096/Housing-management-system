@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
-
+<AnchorPane prefHeight="510.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Admin.PaymentsController">
+   <children>
+      <Button fx:id="Search_btn" layoutX="406.0" layoutY="59.0" mnemonicParsing="false" text="Search" />
+      <Label layoutX="15.0" layoutY="14.0" text="Payments" />
+      <TextField fx:id="Search_txtfield" layoutX="226.0" layoutY="59.0" promptText="Search by payment ID" />
+      <Button fx:id="Filter_btn" layoutX="505.0" layoutY="124.0" mnemonicParsing="false" text="Filter" />
+      <Pagination fx:id="pagination" layoutX="12.0" layoutY="445.0" maxPageIndicatorCount="2" pageCount="10" prefWidth="577" />
+      <DatePicker fx:id="Date_to_picker" layoutX="329.0" layoutY="124.0" promptText="Date to" />
+      <DatePicker fx:id="Date_from_Picker" layoutX="154.0" layoutY="124.0" promptText="Date from" />
+      <Label layoutX="89.0" layoutY="128.0" text="Date range" />
+      <TableView fx:id="paymentsTable" layoutX="10.0" layoutY="165.0" prefHeight="274.0" prefWidth="661.0">
+        <columns>
+          <TableColumn fx:id="tenantNameColumn" prefWidth="75.0" text="Tenant name" />
+          <TableColumn fx:id="unitNumberColumn" prefWidth="75.0" text="Unit number" />
+            <TableColumn fx:id="amountPaidColumn" prefWidth="75.0" text="Amount " />
+            <TableColumn fx:id="rentMonthColumn" prefWidth="75.0" text="Month paid for" />
+            <TableColumn fx:id="transactionDateColumn" prefWidth="75.0" text="Transaction date" />
+            <TableColumn fx:id="paymentTypeColumn" prefWidth="75.0" text="Payment type" />
+        </columns>
+      </TableView>
+   </children>
 </AnchorPane>

@@ -177,6 +177,29 @@ public class Model {
         return receipts;
     }
 
+    public ObservableList<Payment> paymentDetails(){
+        ObservableList<Payment> payments=FXCollections.observableArrayList();
+        Tenant tenant1=getInstance().getTenant();
+        ResultSet resultSet=databaseConnection.printPaymentDetails(tenant1);
+        try {
+            while (resultSet.next()){
+                String tenantName=resultSet.getString("Tenant_name");
+                String unitNumber=resultSet.getString("Unit_number");
+                String paymentType=resultSet.getString("Payment_type");
+                BigDecimal amount=resultSet.getBigDecimal("Amount");
+                LocalDate rentMonth=resultSet.getObject("Rent_month", LocalDate.class);
+                LocalDate datePaymentMade=resultSet.getObject("Payment_date", LocalDate.class);
+
+                Payment payment=new Payment(tenantName,unitNumber,amount,paymentType,rentMonth,datePaymentMade);
+                payments.add(payment);
+                System.out.println("Payment retrieved is: "+payment);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return payments;
+    }
+
     //Admin methods
     public List<String> showAvailableProperties() {
         ResultSet resultSet = databaseConnection.ReturnUnoccuppiedhouses();
