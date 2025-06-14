@@ -34,6 +34,8 @@ public class Viewsfactory  {
     private ScrollPane registrationwindow;
     private AnchorPane addpropertywindow;
     private AnchorPane waterLevelMonitoringWindow;
+    private AnchorPane noticesFiledWindow;
+    private AnchorPane complaintsFiledWindow;
 
     //Viewsfactory Constructor
     public Viewsfactory(){
@@ -258,6 +260,28 @@ public class Viewsfactory  {
             }
         }
         return waterLevelMonitoringWindow;
+    }
+
+    public AnchorPane showNoticesFiled(){
+        if(noticesFiledWindow==null){
+            try {
+                noticesFiledWindow=new FXMLLoader(getClass().getResource("/Fxml/Admin/Notices.fxml")).load();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return noticesFiledWindow;
+    }
+
+    public AnchorPane showComplaintsFiled(){
+        if(complaintsFiledWindow==null){
+            try {
+                complaintsFiledWindow=new FXMLLoader(getClass().getResource("/Fxml/Admin/Complaints.fxml")).load();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return complaintsFiledWindow;
     }
 
 

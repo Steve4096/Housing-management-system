@@ -28,6 +28,8 @@ public class AdminMenuController implements Initializable {
         Tenants_btn.setOnAction(actionEvent -> Tenants());
         UtilityLevels_btn.setOnAction(actionEvent -> utilityLevels());
         Payments_btn.setOnAction(actionEvent -> Payments());
+        Notices_btn.setOnAction(actionEvent -> noticesFiled());
+        Complaints_btn.setOnAction(actionEvent -> complaintsFiled());
         Houses_btn.setOnAction(actionEvent -> Houses());
         Add_property_btn.setOnAction(actionEvent -> Addproperty());
         LogOut_btn.setOnAction(actionEvent -> onLogout());
@@ -59,6 +61,14 @@ private void Addproperty(){
 
 private void utilityLevels(){
         Model.getInstance().getViewsfactory().getAdminSelectedMenuItem().set(AdminMenuOptions.UTILITY_LEVEL);
+}
+
+private void noticesFiled(){
+        Model.getInstance().getViewsfactory().getAdminSelectedMenuItem().set(AdminMenuOptions.NOTICES);
+}
+
+private void complaintsFiled(){
+        Model.getInstance().getViewsfactory().getAdminSelectedMenuItem().set(AdminMenuOptions.COMPLAINTS);
 }
 
 private void onLogout(){

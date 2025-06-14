@@ -306,7 +306,7 @@ public class DatabaseConnection {
     }
 
     public ResultSet getComplaints(){
-        String complaints="SELECT t.Tenant_ID,t.Tenant_name,p.Property_ID,p.Unit_number,c.Complaint_type,c.Complaint_description FROM tenants t JOIN complaints c ON t.Tenant_ID = c.Tenant_ID JOIN properties p ON p.Property_ID = c.Property_ID";
+        String complaints="SELECT t.Tenant_ID,t.Tenant_name,p.Property_ID,p.Unit_number,c.Complaint_type,c.Complaint_description,c.Date_complaint_filed FROM tenants t JOIN complaints c ON t.Tenant_ID = c.Tenant_ID JOIN properties p ON p.Property_ID = c.Property_ID";
         ResultSet resultSet=null;
         try {
             PreparedStatement preparedStatement=this.conn.prepareStatement(complaints);

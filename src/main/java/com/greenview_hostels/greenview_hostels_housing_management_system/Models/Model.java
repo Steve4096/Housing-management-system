@@ -276,6 +276,45 @@ public class Model {
         return payments;
     }
 
+    public ObservableList<Complaints> getComplaints(){
+        ObservableList<Complaints> complaints=FXCollections.observableArrayList();
+        ResultSet resultSet= getDatabaseConnection().getComplaints();
+        try {
+            while (resultSet.next()){
+                String tenantName=resultSet.getString("Tenant_name");
+                String unitNumber=resultSet.getString("Unit_number");
+                String complaintType=resultSet.getString("Complaint_type");
+                String complaintDescription=resultSet.getString("Complaint_description");
+                LocalDate dateComplaintFiled=resultSet.getObject("Date_complaint_filed", LocalDate.class);
+
+                Complaints complaints1=new Complaints(tenantName,unitNumber,complaintType,complaintDescription,dateComplaintFiled);
+                complaints.add(complaints1);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return complaints;
+    }
+
+    public ObservableList<Notices> getNotices(){
+        ObservableList<Notices> notices=FXCollections.observableArrayList();
+        ResultSet resultSet= databaseConnection.getNotices();
+        try {
+            while (resultSet.next()){
+                String tenantName=resultSet.getString("Tenant_name");
+                String unitNumber=resultSet.getString("Unit_number");
+                LocalDate dateNoticeIssued=resultSet.getObject("Date_notice_issued", LocalDate.class);
+                LocalDate dateIntendToLeave=resultSet.getObject("Date_intend_to_leave", LocalDate.class);
+
+                Notices notices1=new Notices(tenantName,unitNumber,dateNoticeIssued,dateIntendToLeave);
+                notices.add(notices1);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return notices;
+    }
+
     //Utility methods(used by both tenant and admin)
     public ObservableList<Tenant> showExistingTenantDetails() {
         ObservableList<Tenant> tenantDetails = FXCollections.observableArrayList();
