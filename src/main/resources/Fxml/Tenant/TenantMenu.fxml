@@ -14,16 +14,16 @@
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="487.0" prefWidth="166.0">
-         <Button fx:id="Dashboard_btn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Dashboard"/>
-         <Button fx:id="PayRent_btn" layoutX="14.0" layoutY="48.0" mnemonicParsing="false" text="Pay rent"/>
-         <Button fx:id="IssueNotice_btn" layoutX="14.0" layoutY="80.0" mnemonicParsing="false" text="Issue notice"/>
-         <Button fx:id="FileComplaint_btn" layoutX="14.0" layoutY="113.0" mnemonicParsing="false"
-                 text="File Complaint"/>
-         <Button fx:id="Receipts_btn" layoutX="14.0" layoutY="149.0" mnemonicParsing="false" text="Receipts"/>
-         <Button fx:id="Payments_btn" layoutX="14.0" layoutY="183.0" mnemonicParsing="false" text="Payments"/>
-         <Button layoutX="18.0" layoutY="218.0" mnemonicParsing="false" text="Maintenance"/>
-         <Button fx:id="Inbox_btn" layoutX="18.0" layoutY="255.0" mnemonicParsing="false" text="Inbox"/>
-         <Button fx:id="LogOut_btn" layoutX="13.0" layoutY="454.0" mnemonicParsing="false" text="Log out"/>
+         <Button fx:id="Dashboard_btn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Dashboard" />
+         <Button fx:id="PayRent_btn" layoutX="14.0" layoutY="48.0" mnemonicParsing="false" text="Pay rent" />
+         <Button fx:id="IssueNotice_btn" layoutX="14.0" layoutY="80.0" mnemonicParsing="false" text="Issue notice" />
+         <Button fx:id="FileComplaint_btn" layoutX="14.0" layoutY="113.0" mnemonicParsing="false" text="File Complaint" />
+         <Button fx:id="Receipts_btn" layoutX="14.0" layoutY="149.0" mnemonicParsing="false" text="Receipts" />
+         <Button fx:id="Payments_btn" layoutX="14.0" layoutY="183.0" mnemonicParsing="false" text="Payments" />
+         <Button layoutX="18.0" layoutY="218.0" mnemonicParsing="false" text="Maintenance" />
+         <Button fx:id="Inbox_btn" layoutX="18.0" layoutY="255.0" mnemonicParsing="false" text="Inbox" />
+         <Button fx:id="LogOut_btn" layoutX="13.0" layoutY="454.0" mnemonicParsing="false" text="Log out" />
+         <Button fx:id="forgotPasswordBtn" layoutX="16.0" layoutY="287.0" mnemonicParsing="false" text="Change password" />
       </AnchorPane>
    </children>
 </VBox>

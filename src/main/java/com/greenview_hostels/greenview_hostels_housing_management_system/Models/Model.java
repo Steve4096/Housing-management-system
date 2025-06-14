@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -83,14 +84,14 @@ public class Model {
         this.tenant = tenant;
     }
 
-    public void evaluateClientCredentials(String Email_address, String Password){
+    public void evaluateClientCredentials(String Email_address, String password){
         ResultSet resultSet= databaseConnection.getClientData(Email_address);
         try {
             if (resultSet.isBeforeFirst()){
                 resultSet.next();
                 System.out.println("Fetched data for:"+" "+Email_address);
-                String password=resultSet.getString("Password");
-                boolean passwordsMatch=Password.equals(password);
+                String hashedPassword=resultSet.getString("Password");
+                boolean passwordsMatch=BCrypt.checkpw(password,hashedPassword);
                 if (passwordsMatch){
                     Tenant loggedInTenant=new Tenant(tenantID,tenantName,phoneNo,emailAddress,dateMovedIn);
                     loggedInTenant.tenantIDProperty().set(resultSet.getString("Tenant_ID"));
@@ -316,6 +317,12 @@ public class Model {
     }
 
     //Utility methods(used by both tenant and admin)
+    //hash the password
+    public String hashPassword(String plainPassword){
+        return BCrypt.hashpw(plainPassword,BCrypt.gensalt());
+    }
+
+
     public ObservableList<Tenant> showExistingTenantDetails() {
         ObservableList<Tenant> tenantDetails = FXCollections.observableArrayList();
         ResultSet resultSet = databaseConnection.showExistingTenantDetails();

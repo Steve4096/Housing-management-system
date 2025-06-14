@@ -25,7 +25,7 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupLoginButton();
-        Forgot_pwd_link.setOnAction(actionEvent -> RedirectToResetPasswordScreen());
+       // Forgot_pwd_link.setOnAction(actionEvent -> RedirectToResetPasswordScreen());
         CheckEmailAddressFormat();
         Back_btn.setOnAction(actionEvent -> showLoginAccountSelector());
         Signin_btn.setOnAction(actionEvent -> login());
@@ -37,11 +37,11 @@ public class LoginController implements Initializable {
         Model.getInstance().getViewsfactory().showLoginAccountSelectorWindow();
     }
 
-    private void RedirectToResetPasswordScreen(){
-        Stage stage=(Stage) Forgot_pwd_link.getScene().getWindow();
-        Model.getInstance().getViewsfactory().CloseWindow(stage);
-        Model.getInstance().getViewsfactory().showForgotPasswordScreen();
-    }
+//    private void RedirectToResetPasswordScreen(){
+//        Stage stage=(Stage) Forgot_pwd_link.getScene().getWindow();
+//        Model.getInstance().getViewsfactory().CloseWindow(stage);
+//        Model.getInstance().getViewsfactory().showForgotPasswordScreen();
+//    }
 
    private void CheckEmailAddressFormat(){
         Email_textarea.textProperty().addListener(new ChangeListener<String>() {

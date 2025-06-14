@@ -19,10 +19,11 @@ public class TenantController implements Initializable {
             switch (newVal){
                 case DASHBOARD -> loadDashboard();
                 case PAY_RENT -> loadRentPayment();
-                case PAYMENTS -> Tenant_parent.setCenter(Model.getInstance().getViewsfactory().showPreviousPayments());
+                case PAYMENTS -> loadPaymentHistory();
                 case ISSUE_NOTICE -> loadIssueNotice();
                 case SERVICE_REQUEST -> loadServiceRequest();
                 case RECEIPTS -> loadReceipts();
+                case CHANGE_PASSWORD -> changePassword();
             }
         } );
         loadDashboard();
@@ -51,5 +52,14 @@ public class TenantController implements Initializable {
     private void loadReceipts(){
         Tenant tenant=Model.getInstance().getTenant();
         Tenant_parent.setCenter(Model.getInstance().getViewsfactory().getReceiptsWindow(tenant));
+    }
+
+    private void loadPaymentHistory(){
+        Tenant tenant=Model.getInstance().getTenant();
+        Tenant_parent.setCenter(Model.getInstance().getViewsfactory().showPreviousPayments(tenant));
+    }
+
+    private void changePassword(){
+        Tenant_parent.setCenter(Model.getInstance().getViewsfactory().showForgotPasswordScreen());
     }
 }

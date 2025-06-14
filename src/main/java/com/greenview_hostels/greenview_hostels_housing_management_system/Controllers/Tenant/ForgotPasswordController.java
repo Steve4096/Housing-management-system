@@ -1,11 +1,15 @@
 package com.greenview_hostels.greenview_hostels_housing_management_system.Controllers.Tenant;
 
+import com.greenview_hostels.greenview_hostels_housing_management_system.Models.Model;
+import com.greenview_hostels.greenview_hostels_housing_management_system.Models.Tenant;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,22 +22,37 @@ public class ForgotPasswordController implements Initializable {
     public Label Pwd_dont_match_errorlbl;
     public Label Pwdformat_errorlbl;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ResetPwd_btn.setOnAction(actionEvent -> checkIfPasswordsMatch());
+        ResetPwd_btn.setOnAction(actionEvent -> updatePassword());
         ValidatePassword();
     }
 
-    private void checkIfPasswordsMatch(){
+
+    private void updatePassword(){
+        String password=NewPwd_txtarea.getText();
+        String hashedPassword= Model.getInstance().hashPassword(password);
+        Tenant tenant=Model.getInstance().getTenant();
+        if (tenant==null){
+            showErrorMessage("COULD NOT FIND THE TENANT");
+            System.err.println("Could not fetch the tenant");
+        }
+        String tenantID=tenant.tenantIDProperty().get();
+        if (checkIfPasswordsMatch()){
+            Model.getInstance().getDatabaseConnection().updatePassword(hashedPassword,tenantID);
+        }
+    }
+
+    private boolean checkIfPasswordsMatch(){
         String password=NewPwd_txtarea.getText();
         String newPwd=ConfirmPwd_txtarea.getText();
-        if(password.equals(newPwd)){
+        if(newPwd.equals(password)){
             Pwd_dont_match_errorlbl.setText("");
-        }else {
-            Pwd_dont_match_errorlbl.setText("Passwords don't match");
+            return true;
         }
-        System.out.println(password);
-        System.out.println(newPwd);
+        Pwd_dont_match_errorlbl.setText("Passwords don't match");
+        return false;
     }
 
     private void ValidatePassword(){
@@ -61,6 +80,16 @@ public class ForgotPasswordController implements Initializable {
                 }
             }
         });
+    }
+
+
+
+    private void showErrorMessage(String errorMessage){
+        Alert alert=new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText("");
+        alert.setContentText(errorMessage);
+        alert.showAndWait();
     }
 
 

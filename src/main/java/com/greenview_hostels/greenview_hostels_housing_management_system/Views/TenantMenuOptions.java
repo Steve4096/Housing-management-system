@@ -7,5 +7,6 @@ public enum TenantMenuOptions {
     RECEIPTS,
     NOTIFICATIONS,
     SERVICE_REQUEST,
-    ISSUE_NOTICE
+    ISSUE_NOTICE,
+    CHANGE_PASSWORD
 }

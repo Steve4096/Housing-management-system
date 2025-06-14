@@ -2,6 +2,7 @@ package com.greenview_hostels.greenview_hostels_housing_management_system.Models
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -40,6 +41,17 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
         return resultSet;
+    }
+
+    public void updatePassword(String hashedPassword,String tenantId){
+        String updatePassword="UPDATE tenants SET password=? WHERE Tenant_ID=?";
+       try (PreparedStatement preparedStatement=this.conn.prepareStatement(updatePassword)){
+           preparedStatement.setString(1,hashedPassword);
+           preparedStatement.setString(2,tenantId);
+           preparedStatement.executeUpdate();
+       }catch (SQLException e){
+           e.printStackTrace();
+       }
     }
 
     public void fileNotice(Integer IDNo, int Unit_number, Date selectedDate) {
@@ -415,7 +427,7 @@ public class DatabaseConnection {
     }
 
     public void registerNewTenant(String Tenant_ID, String name, String Phone_no, String Email_address, String Unit_number) {
-        String registerTenant = "INSERT INTO tenants(Tenant_ID,Tenant_name,Phone_number,Email_address,Status,Password) values(?,?,?,?,?,'Active','Greenview2025')";
+        String registerTenant = "INSERT INTO tenants(Tenant_ID,Tenant_name,Phone_number,Email_address,Status,Password) values(?,?,?,?,'Active',?)";
         String addTenantToOccupancyTable = "INSERT INTO occupancy(Property_ID,Tenant_ID,Date_occupied,Date_vacated) values(?,?,NOW(),NULL)";
         try {
             conn.setAutoCommit(false);
@@ -423,12 +435,17 @@ public class DatabaseConnection {
             //Get Property ID
             int propertyID = getPropertyID(Unit_number);
 
+            //hash the hardcoded password
+            String rawPassword="Greenview2025";
+            String hashedPassword= BCrypt.hashpw(rawPassword,BCrypt.gensalt());
+
             //Insert tenant
             try (PreparedStatement tenantStatement = this.conn.prepareStatement(registerTenant)) {
                 tenantStatement.setString(1, Tenant_ID);
                 tenantStatement.setString(2, name);
                 tenantStatement.setString(3, Phone_no);
                 tenantStatement.setString(4, Email_address);
+                tenantStatement.setString(5,hashedPassword);
                 tenantStatement.executeUpdate();
             }
 

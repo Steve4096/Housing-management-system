@@ -53,10 +53,20 @@ public class Viewsfactory  {
         CreateStage(loader,null);
     }
 
-    public void showForgotPasswordScreen(){
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/ForgotPassword.fxml"));
-        CreateStage(loader,null);
+
+    public AnchorPane showForgotPasswordScreen() {
+        if (forgotPasswordScreen == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Tenant/ForgotPassword.fxml"));
+                forgotPasswordScreen = loader.load();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return forgotPasswordScreen;
     }
+
+
 
     public void showTenantDashboard() {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Tenant/Tenant.fxml"));
@@ -122,12 +132,13 @@ public class Viewsfactory  {
         return receiptsWindow;
     }
 
-    public AnchorPane showPreviousPayments(){
+    public AnchorPane showPreviousPayments(Tenant tenant){
         if(paymentsWindow==null){
             try {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/Fxml/Tenant/PaymentHistory.fxml"));
                 paymentsWindow=loader.load();
                 PaymentHistoryController paymentHistoryController=loader.getController();
+                paymentHistoryController.setTenant(tenant);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

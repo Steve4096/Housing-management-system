@@ -18,6 +18,7 @@ module com.greenview_hostels.greenview_hostels_housing_management_system {
     requires jdk.httpserver;
     requires com.fasterxml.jackson.databind;
     requires com.google.gson;
+    requires jbcrypt;
     //requires org.apache.commons.codec;
 
     opens com.greenview_hostels.greenview_hostels_housing_management_system to javafx.fxml;

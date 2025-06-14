@@ -18,6 +18,7 @@ public class TenantMenuController implements Initializable {
     public Button Payments_btn;
     public Button Inbox_btn;
     public Button LogOut_btn;
+    public Button forgotPasswordBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -27,6 +28,7 @@ public class TenantMenuController implements Initializable {
         Receipts_btn.setOnAction(actionEvent -> showReceiptsWindow());
         Payments_btn.setOnAction(actionEvent -> showPaymentsWindow());
         FileComplaint_btn.setOnAction(actionEvent -> showRequestServiceWindow());
+        forgotPasswordBtn.setOnAction(actionEvent ->showForgotPasswordWindow());
         LogOut_btn.setOnAction(actionEvent -> logout());
     }
 
@@ -52,6 +54,10 @@ public class TenantMenuController implements Initializable {
 
     private void showPaymentsWindow(){
         Model.getInstance().getViewsfactory().getTenantSelectedMenuItem().set(TenantMenuOptions.PAYMENTS);
+    }
+
+    private void showForgotPasswordWindow(){
+        Model.getInstance().getViewsfactory().getTenantSelectedMenuItem().set(TenantMenuOptions.CHANGE_PASSWORD);
     }
 
     private void logout(){
