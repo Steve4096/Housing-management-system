@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -52,13 +53,11 @@ public class PayRentController implements Initializable {
 
     String idNo;
     int id;
-    //String receiptNumber=generateReceiptNumber();
     String unitNumber;
     String monthNameSelected;
     Month monthSelected;
     LocalDate firstOfMonth;
     Date date;
-    String year=LocalDate.now().getYear()+"";
 
 
 
@@ -114,14 +113,6 @@ public class PayRentController implements Initializable {
         return "RCPT-"+datePart+"-"+randomNumber;
     }
 
-//    private boolean checkPenalty(){
-//        LocalDate currentDate=LocalDate.now();
-//        LocalDate fiveDays=currentDate.minusDays(5);
-//        try {
-//
-//        }
-//    }
-
 
     private void makePayment() {
         BigDecimal rentAmount = convertRentAmountToBigDecimal();
@@ -173,10 +164,38 @@ public class PayRentController implements Initializable {
                 date = java.sql.Date.valueOf(firstOfMonth);
 
             boolean isRentPaidEnough=checkRentAmountPaid();
+            BigDecimal baseRent=convertRentAmountToBigDecimal();
 
                 if(isRentPaidEnough&&isRentAmountValid) {
+                    LocalDate today = LocalDate.now();
+                    LocalDate dueDate = firstOfMonth.plusDays(5);
+                    BigDecimal penaltyAmount = BigDecimal.ZERO;
+                    BigDecimal finalAmount = baseRent;
+
+                    //The part where penalty is calculated
+                    if (today.isAfter(dueDate)) {
+                        penaltyAmount = baseRent.multiply(new BigDecimal("0.10")).setScale(0, RoundingMode.HALF_UP); // Integer style
+                        finalAmount = baseRent.add(penaltyAmount);
+
+                        Alert penaltyAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        penaltyAlert.setTitle("Late Rent Payment");
+                        penaltyAlert.setHeaderText("Penalty Notice");
+                        penaltyAlert.setContentText("You are paying after the 5th of " + monthNameSelected +
+                                ".\nPenalty (10%): KES " + penaltyAmount +
+                                "\nTotal: KES " + finalAmount + "\n\nProceed with payment?");
+
+                        penaltyAlert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+                        ButtonType result = penaltyAlert.showAndWait().orElse(ButtonType.NO);
+
+                        if (result == ButtonType.NO) {
+                            showInfo("Payment cancelled.");
+                            return; // Exit cleanly, no DB entry
+                        }
+                    }
+
+
                     String receiptNumber = generateReceiptNumber();
-                    Model.getInstance().getDatabaseConnection().payRent(id, unitNumber, rentAmount, date, receiptNumber);
+                   // Model.getInstance().getDatabaseConnection().payRent(id, unitNumber, rentAmount, date, receiptNumber);
                     showSuccessMessage("Your " + monthNameSelected + " rent has been paid successfully");
                     resetAllFields();
                 }else {
@@ -184,6 +203,19 @@ public class PayRentController implements Initializable {
                 }
         }
     }
+
+    private BigDecimal applyLatePaymentPenalty(BigDecimal baseRent, Month selectedMonth) {
+        LocalDate today = LocalDate.now();
+        LocalDate dueDate = LocalDate.of(today.getYear(), selectedMonth, 1).plusDays(5);
+
+        if (today.isAfter(dueDate)) {
+            BigDecimal penaltyRate = new BigDecimal("0.10"); // 10%
+            BigDecimal penalty = baseRent.multiply(penaltyRate).setScale(2, RoundingMode.HALF_UP);
+            return baseRent.add(penalty);
+        }
+        return baseRent;
+    }
+
 
 
 

@@ -24,17 +24,41 @@ public class TenantRegistrationController implements Initializable {
     public TextField TenantFullname_txtfield;
 
     @Override
+//    public void initialize(URL url, ResourceBundle resourceBundle) {
+//        House_number_selector.setOnShowing(event -> loadAvailableProperties());
+//        loadAvailableProperties();
+//        Save_btn.setOnAction(actionEvent -> registerNewClient());
+//    }
+//
+//    private void loadAvailableProperties() {
+//        setupSaveButton();
+//        Model.getInstance().showAvailableProperties();
+//        House_number_selector.getItems().setAll(Model.getInstance().availableProperties);
+//
+//    }
+
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Link ComboBox items to the observable list ONCE
+        House_number_selector.setItems(Model.getInstance().availableProperties);
+
+        // Load the initial list
         loadAvailableProperties();
+
+        // Every time dropdown opens, reload fresh available houses
+        House_number_selector.setOnShowing(event -> loadAvailableProperties());
+
+        // Setup save button once
+        setupSaveButton();
+
+        // Setup save action
         Save_btn.setOnAction(actionEvent -> registerNewClient());
     }
 
     private void loadAvailableProperties() {
-        setupSaveButton();
+        // Clear and reload houses from DB into the observable list
         Model.getInstance().showAvailableProperties();
-        House_number_selector.getItems().setAll(Model.getInstance().availableProperties);
-
     }
+
 
     private void registerNewClient(){
         String IDNo=TenantID_txtfield.getText();
@@ -44,6 +68,7 @@ public class TenantRegistrationController implements Initializable {
         String emailAddress=Email_txtfield.getText();
         String houseNo= House_number_selector.getValue();
         Model.getInstance().getDatabaseConnection().registerNewTenant(IDNo,name,phoneNo,emailAddress,houseNo);
+        //loadAvailableProperties();
         resetAllFields();
     }
 

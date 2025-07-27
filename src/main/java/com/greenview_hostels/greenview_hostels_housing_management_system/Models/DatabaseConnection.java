@@ -15,7 +15,7 @@ public class DatabaseConnection {
 
     public DatabaseConnection() {
         try {
-            this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/greenview_centa", "root", "");
+            this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/greenviewCenta", "root", "");
             if (this.conn != null) {
                 System.out.println("Connection to the database is successful");
             }
@@ -182,8 +182,8 @@ public class DatabaseConnection {
         return false;
     }
 
-    public void payRent(Integer IDNo, String unit_number, BigDecimal amount, Date rentMonth, String receiptNumber) {
-        String makePayment = "INSERT INTO PAYMENTS(Tenant_ID,Property_ID,Payment_type,Amount,Rent_month,Payment_date) values(?,?,'Rent',?,?,NOW())";
+    public void payRent(Integer IDNo, String unit_number, BigDecimal amount, Date rentMonth, String receiptNumber,BigDecimal penaltyAmount,BigDecimal totalAmount) {
+        String makePayment = "INSERT INTO PAYMENTS(Tenant_ID,Property_ID,Payment_type,Amount,Rent_month,Penalty_amount,Payment_date,Total_amount_paid) values(?,?,'Rent',?,?,?,?,NOW())";
         String makeReceipt = "INSERT INTO RECEIPTS(Payment_ID,Date_issued,Receipt_number,Issued_by)values(?,NOW(),?,'System')";
         try {
             int paymentIDGenerated = 0;
@@ -196,6 +196,8 @@ public class DatabaseConnection {
                 rentstatement.setInt(2, propertyID);
                 rentstatement.setBigDecimal(3, amount);
                 rentstatement.setDate(4, rentMonth);
+                rentstatement.setBigDecimal(5,penaltyAmount);
+                rentstatement.setBigDecimal(6,totalAmount);
                 int affectedRows = rentstatement.executeUpdate();
                 if (affectedRows == 0) {
                     System.err.println("0 rows affected. Failed to pay rent");
@@ -224,6 +226,58 @@ public class DatabaseConnection {
                 ex.printStackTrace();
             }//throw new RuntimeException(e);
             System.err.println("Failed to pay rent");
+            e.printStackTrace();
+        } finally {
+            try {
+                this.conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    public void payPenalty(Integer IDNo, String unit_number,String receiptNumber,BigDecimal penaltyAmount,BigDecimal totalAmount){
+        String payPenalty="INSERT INTO PAYMENTS(Tenant_ID,Property_ID,Payment_type,Penalty_amount,Total_amount_paid,Payment_date)values(?,?,'PENALTY',?,?,NOW())";
+        String generateReceipt="INSERT INTO RECEIPTS(Payment_ID,Date_issued,Receipt_number,Issued_by)values(?,NOW(),?,'System')";
+        try {
+            int paymentIDGenerated = 0;
+            this.conn.setAutoCommit(false);
+            //Fetch property ID
+            int propertyID = getPropertyID(unit_number);
+            //insert into payments table
+            try (PreparedStatement penaltystatement = this.conn.prepareStatement(payPenalty, Statement.RETURN_GENERATED_KEYS)) {
+                penaltystatement.setInt(1, IDNo);
+                penaltystatement.setInt(2, propertyID);
+                penaltystatement.setBigDecimal(3,penaltyAmount);
+                penaltystatement.setBigDecimal(4,totalAmount);
+                int affectedRows = penaltystatement.executeUpdate();
+                if (affectedRows == 0) {
+                    System.err.println("0 rows affected. Failed to pay rent");
+                } else {
+                    System.out.println("Rent successfully paid");
+                }
+                try (ResultSet generatedKeys = penaltystatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        paymentIDGenerated = generatedKeys.getInt(1);
+                        System.out.println("Payment ID generated: " + paymentIDGenerated);
+                    }
+                }
+            }
+            try (PreparedStatement receiptStatement = this.conn.prepareStatement(generateReceipt)) {
+                receiptStatement.setInt(1, paymentIDGenerated);
+                receiptStatement.setString(2, receiptNumber);
+                receiptStatement.executeUpdate();
+                System.out.println("Receipt stored successfully");
+            }
+            this.conn.commit();
+        } catch (Exception e) {
+            try {
+                this.conn.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Error while rolling back");
+                ex.printStackTrace();
+            }//throw new RuntimeException(e);
+            System.err.println("Failed to pay penalty");
             e.printStackTrace();
         } finally {
             try {

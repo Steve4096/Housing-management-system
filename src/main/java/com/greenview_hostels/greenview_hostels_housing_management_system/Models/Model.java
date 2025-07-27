@@ -25,7 +25,8 @@ public class Model {
     private static Model model;
     private static Viewsfactory viewsfactory;
     private final DatabaseConnection databaseConnection;
-    public List<String> availableProperties;
+    public ObservableList<String> availableProperties=FXCollections.observableArrayList();
+   // public List<String> availableProperties;
     //public ObservableList<Tenant> showExistingTenants = FXCollections.observableArrayList();
 
     //Client variables
@@ -201,10 +202,23 @@ public class Model {
         return payments;
     }
 
-    //Admin methods
-    public List<String> showAvailableProperties() {
+//    //Admin methods
+//    public List<String> showAvailableProperties() {
+//        ResultSet resultSet = databaseConnection.ReturnUnoccuppiedhouses();
+//        availableProperties = new ArrayList<>();
+//        try {
+//            while (resultSet.next()) {
+//                availableProperties.add(resultSet.getString("Unit_number"));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return availableProperties;
+//    }
+
+    public ObservableList<String> showAvailableProperties() {
         ResultSet resultSet = databaseConnection.ReturnUnoccuppiedhouses();
-        availableProperties = new ArrayList<>();
+        availableProperties.clear();
         try {
             while (resultSet.next()) {
                 availableProperties.add(resultSet.getString("Unit_number"));
@@ -214,6 +228,7 @@ public class Model {
         }
         return availableProperties;
     }
+
 
 
     public ObservableList<Property> showExistingProperties(){

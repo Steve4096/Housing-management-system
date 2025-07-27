@@ -305,6 +305,7 @@ public class Viewsfactory  {
             //Stage stage=new Stage();
             splashStage.setTitle("Splashscreen");
             splashStage.setScene(scene);
+            //splashStage.setMaximized(true);
             splashStage.show();
         }catch (Exception e){
             e.printStackTrace();
@@ -319,6 +320,7 @@ public class Viewsfactory  {
             newStage.setScene(scene);
             newStage.setTitle("Greenview Hostels Housing Management System");
             newStage.setResizable(true);
+            newStage.setMaximized(true);
             newStage.show();
 
             //Close the current stage
