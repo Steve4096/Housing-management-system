@@ -19,7 +19,7 @@ public class HousesController implements Initializable {
     public TableView Properties_tableview;
     public TableColumn unitNumber_column;
     public TableColumn unitType_column;
-    public TableColumn Rent_amount_column;
+    //public TableColumn Rent_amount_column;
 
     private ObservableList<Property> propertyList;
 

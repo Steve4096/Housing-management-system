@@ -20,10 +20,9 @@
          <Button fx:id="FileComplaint_btn" layoutX="14.0" layoutY="113.0" mnemonicParsing="false" text="File Complaint" />
          <Button fx:id="Receipts_btn" layoutX="14.0" layoutY="149.0" mnemonicParsing="false" text="Receipts" />
          <Button fx:id="Payments_btn" layoutX="14.0" layoutY="183.0" mnemonicParsing="false" text="Payments" />
-         <Button layoutX="18.0" layoutY="218.0" mnemonicParsing="false" text="Maintenance" />
-         <Button fx:id="Inbox_btn" layoutX="18.0" layoutY="255.0" mnemonicParsing="false" text="Inbox" />
+         <Button fx:id="Inbox_btn" layoutX="13.0" layoutY="217.0" mnemonicParsing="false" text="Inbox" />
          <Button fx:id="LogOut_btn" layoutX="13.0" layoutY="454.0" mnemonicParsing="false" text="Log out" />
-         <Button fx:id="forgotPasswordBtn" layoutX="16.0" layoutY="287.0" mnemonicParsing="false" text="Change password" />
+         <Button fx:id="forgotPasswordBtn" layoutX="15.0" layoutY="252.0" mnemonicParsing="false" text="Change password" />
       </AnchorPane>
    </children>
 </VBox>

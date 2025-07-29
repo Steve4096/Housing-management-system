@@ -15,9 +15,9 @@
       <TableView fx:id="Tenants_tblview" layoutX="19.0" layoutY="92.0" prefHeight="291.0" prefWidth="572.0">
         <columns>
           <TableColumn fx:id="Tname" prefWidth="105.99996948242188" text="Tenant name" />
-            <TableColumn fx:id="PhoneNo" prefWidth="125.33334350585938" text="Phone number" />
-            <TableColumn fx:id="HouseNo" prefWidth="89.33331298828125" text="House number" />
-            <TableColumn fx:id="Date_moved_in" prefWidth="163.33331298828125" text="Date moved in" />
+            <TableColumn fx:id="PhoneNo" prefWidth="139.99996948242188" text="Phone number" />
+            <TableColumn fx:id="HouseNo" prefWidth="141.3333740234375" text="House number" />
+            <TableColumn fx:id="Date_moved_in" prefWidth="181.99993896484375" text="Date moved in" />
         </columns>
       </TableView>
    </children>
